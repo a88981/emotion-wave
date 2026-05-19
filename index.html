@@ -201,10 +201,10 @@
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     color: var(--terracotta);
-    font-size: 0.82rem;
-    letter-spacing: 0.2em;
+    font-size: 0.95rem;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -541,11 +541,10 @@
   }
 
   .body-intro {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    color: var(--ink-soft);
-    font-size: 0.9rem;
-    margin-bottom: 14px;
+    font-family: 'Noto Serif TC', serif;
+    color: var(--ink-faint);
+    font-size: 0.78rem;
+    margin-bottom: 10px;
     line-height: 1.6;
   }
 
@@ -1117,6 +1116,31 @@
     margin-right: 6px;
   }
 
+  .entry-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 14px;
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(184, 154, 150, 0.2);
+  }
+
+  .entry-action-btn {
+    background: none;
+    border: none;
+    color: var(--ink-faint);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    padding: 2px 4px;
+    transition: color 0.2s;
+  }
+
+  .entry-action-btn:hover { color: var(--terracotta); }
+  .entry-action-delete:hover { color: #c47878; }
+
+  /* Legacy: hover 顯示版本 — 保留供 thread-card 用 */
   .delete-btn {
     position: absolute;
     top: 14px;
@@ -1132,9 +1156,7 @@
     font-style: italic;
   }
 
-  .history-entry:hover .delete-btn,
   .thread-card:hover .delete-btn { opacity: 1; }
-
   .delete-btn:hover { color: var(--terracotta); }
 
   .stats-grid {
@@ -1266,6 +1288,41 @@
     display: flex;
     gap: 10px;
     margin-top: 20px;
+  }
+
+  .edit-intensity-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+  }
+
+  .edit-int-btn {
+    padding: 8px 4px;
+    background: rgba(255, 255, 255, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 8px;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .edit-int-btn.active {
+    background: linear-gradient(135deg, rgba(250, 200, 190, 0.85) 0%, rgba(240, 165, 154, 0.85) 100%);
+    color: #fff;
+    border-color: rgba(232, 145, 122, 0.5);
+  }
+
+  .edit-mood-select {
+    width: 100%;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 8px;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.92rem;
+    color: var(--ink);
   }
 
   .thread-detail-header {
@@ -2972,6 +3029,52 @@
 </div>
 
 <!-- Help Modal -->
+<!-- Edit entry modal -->
+<div class="modal-bg" id="editModal">
+  <div class="modal" style="max-width: 520px;">
+    <h3>編輯紀錄 · edit</h3>
+    <p style="font-size:0.78rem; color:var(--ink-faint); margin-bottom:18px;" id="editDateLabel"></p>
+
+    <div class="section-label">情緒強度 · intensity</div>
+    <div class="edit-intensity-row">
+      <button class="edit-int-btn" data-val="1">1 微微</button>
+      <button class="edit-int-btn" data-val="2">2 有點</button>
+      <button class="edit-int-btn" data-val="3">3 明顯</button>
+      <button class="edit-int-btn" data-val="4">4 很強</button>
+      <button class="edit-int-btn" data-val="5">5 淹沒</button>
+    </div>
+
+    <div class="section-label" style="margin-top: 20px;">情緒色彩 · mood</div>
+    <select id="editMood" class="edit-mood-select"></select>
+
+    <div class="section-label" style="margin-top: 20px;">事件 · event</div>
+    <textarea id="editEvent" rows="2"></textarea>
+
+    <div class="section-label" style="margin-top: 16px;">感受 · feeling</div>
+    <textarea id="editFeeling" rows="3"></textarea>
+
+    <div class="section-label" style="margin-top: 16px;">聯想 · association</div>
+    <input type="text" id="editAssociation" />
+
+    <div class="section-label" style="margin-top: 16px;">身體訊息 · body</div>
+    <p class="body-intro" style="margin-bottom: 8px;">用「、」分隔多個訊息（譬如：心輪悶、喉嚨緊）</p>
+    <input type="text" id="editBody" placeholder="例如：心輪悶、喉嚨緊" />
+
+    <div class="section-label" style="margin-top: 16px;">追蹤線 · thread</div>
+    <select id="editThread" class="thread-select"></select>
+
+    <div id="editFreeNoteWrap" style="display:none;">
+      <div class="section-label" style="margin-top: 16px;">想說的話 · free note</div>
+      <textarea id="editFreeNote" rows="3"></textarea>
+    </div>
+
+    <div class="modal-actions">
+      <button class="submit-btn" id="editSaveBtn">儲存修改</button>
+      <button class="submit-btn secondary" id="editCancelBtn">取消</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-bg" id="helpModal">
   <div class="modal" style="max-width: 560px;">
     <h3>使用說明 · how to use</h3>
@@ -4085,7 +4188,6 @@ function waveClass(w) {
 function renderEntryCard(e, inThread) {
   const thread = e.threadId ? state.threads.find(t => t.id === e.threadId) : null;
   let html = `<div class="history-entry ${e.threadId ? 'thread-entry' : ''} ${e.isMorning ? 'morning-entry' : ''}">
-    <button class="delete-btn" onclick="deleteEntry(${e.id})">delete</button>
     <div class="entry-header">
       <span class="entry-date">${formatDate(e.date)} · ${e.isMorning ? '🤍 開機 · MORNING' : (e.mode === 'deep' ? 'deep' : 'quick')}</span>
       ${e.isMorning ? '' : `<span class="entry-wave-pos ${waveClass(e.wave)}">${waveLabel(e.wave)}</span>`}
@@ -4113,6 +4215,10 @@ function renderEntryCard(e, inThread) {
   if (e.voice) html += `<div class="entry-text"><em>情緒之聲 ·</em>${e.voice}</div>`;
   if (e.insight) html += `<div class="entry-text"><em>洞察 ·</em>${e.insight}</div>`;
   if (e.freeNote) html += `<div class="entry-text"><em>想說的話 ·</em>${e.freeNote}</div>`;
+  html += `<div class="entry-actions">
+    <button class="entry-action-btn" onclick="openEditModal(${e.id})">edit</button>
+    <button class="entry-action-btn entry-action-delete" onclick="deleteEntry(${e.id})">delete</button>
+  </div>`;
   html += `</div>`;
   return html;
 }
@@ -4124,6 +4230,136 @@ window.deleteEntry = async function(id) {
   if (state.currentTab === 'history') renderHistory();
   if (state.currentTab === 'threads' && state.currentThreadId) openThread(state.currentThreadId);
 };
+
+// ============= Edit Entry Modal =============
+
+let editingEntryId = null;
+
+window.openEditModal = function(id) {
+  const entry = state.entries.find(e => e.id === id);
+  if (!entry) return;
+  editingEntryId = id;
+
+  // 填日期 label
+  document.getElementById('editDateLabel').textContent = formatDate(entry.date)
+    + (entry.isMorning ? ' · 🤍 開機 · MORNING' : '');
+
+  // 強度按鈕
+  document.querySelectorAll('.edit-int-btn').forEach(btn => {
+    btn.classList.toggle('active', Number(btn.dataset.val) === entry.intensity);
+  });
+
+  // 情緒選單：扁平列出 6 類 × 4 = 24 個
+  const moodSel = document.getElementById('editMood');
+  moodSel.innerHTML = '';
+  MOOD_CATEGORIES.forEach(cat => {
+    const group = document.createElement('optgroup');
+    group.label = cat.label;
+    cat.moods.forEach(m => {
+      const opt = document.createElement('option');
+      opt.value = m.name;
+      opt.textContent = `${m.emoji} ${m.name}`;
+      if (m.name === entry.mood) opt.selected = true;
+      group.appendChild(opt);
+    });
+    moodSel.appendChild(group);
+  });
+
+  document.getElementById('editEvent').value = entry.event || '';
+  document.getElementById('editFeeling').value = entry.feeling || '';
+  document.getElementById('editAssociation').value = entry.association || '';
+  document.getElementById('editBody').value = [
+    ...(entry.body || []),
+    entry.bodyExtra ? entry.bodyExtra : ''
+  ].filter(Boolean).join('、');
+
+  // 追蹤線選單
+  const threadSel = document.getElementById('editThread');
+  threadSel.innerHTML = '<option value="">不綁定（日常記錄）</option>';
+  state.threads.filter(t => !t.resolved).forEach(t => {
+    const opt = document.createElement('option');
+    opt.value = t.id;
+    opt.textContent = `⌒ ${t.title}`;
+    if (t.id === entry.threadId) opt.selected = true;
+    threadSel.appendChild(opt);
+  });
+
+  // 想說的話只在綁定追蹤線時才顯示
+  const fnWrap = document.getElementById('editFreeNoteWrap');
+  fnWrap.style.display = entry.threadId ? 'block' : 'none';
+  document.getElementById('editFreeNote').value = entry.freeNote || '';
+  threadSel.onchange = () => {
+    fnWrap.style.display = threadSel.value ? 'block' : 'none';
+  };
+
+  document.getElementById('editModal').classList.add('show');
+};
+
+// 強度按鈕點擊
+document.querySelectorAll('.edit-int-btn').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('.edit-int-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  };
+});
+
+document.getElementById('editCancelBtn').onclick = () => {
+  document.getElementById('editModal').classList.remove('show');
+  editingEntryId = null;
+};
+
+document.getElementById('editSaveBtn').onclick = async () => {
+  if (!editingEntryId) return;
+  const entry = state.entries.find(e => e.id === editingEntryId);
+  if (!entry) return;
+
+  const activeBtn = document.querySelector('.edit-int-btn.active');
+  const newIntensity = activeBtn ? Number(activeBtn.dataset.val) : entry.intensity;
+  const newMood = document.getElementById('editMood').value;
+  const newEvent = document.getElementById('editEvent').value.trim();
+  const newFeeling = document.getElementById('editFeeling').value.trim();
+  const newAssociation = document.getElementById('editAssociation').value.trim();
+  const newBodyRaw = document.getElementById('editBody').value.trim();
+  const newThreadId = document.getElementById('editThread').value || null;
+  const newFreeNote = newThreadId ? document.getElementById('editFreeNote').value.trim() : '';
+
+  // 身體：用「、」「,」「，」分隔
+  const bodyTokens = newBodyRaw
+    ? newBodyRaw.split(/[、,,]+/).map(s => s.trim()).filter(Boolean)
+    : [];
+
+  entry.intensity = newIntensity;
+  entry.mood = newMood;
+  entry.event = newEvent;
+  entry.feeling = newFeeling;
+  entry.association = newAssociation;
+  entry.body = bodyTokens;
+  entry.bodyExtra = '';  // 統一進 body
+  entry.threadId = newThreadId;
+  entry.freeNote = newFreeNote;
+  // 強度或情緒改了的話，波位重新推算
+  entry.wave = inferWaveFromIntensity(newMood, newIntensity);
+  entry.mode = entry.isMorning ? 'morning' : (newThreadId ? 'deep' : 'quick');
+
+  await saveAll();
+  document.getElementById('editModal').classList.remove('show');
+  editingEntryId = null;
+  toast('修改完成 ·');
+
+  if (state.currentTab === 'history') renderHistory();
+  if (state.currentTab === 'threads' && state.currentThreadId) openThread(state.currentThreadId);
+
+  // 嘗試同步到試算表（如果有開）
+  if (typeof syncEntry === 'function') syncEntry(entry);
+};
+
+// 點 modal 背景關閉
+document.getElementById('editModal').addEventListener('click', (e) => {
+  if (e.target.id === 'editModal') {
+    document.getElementById('editModal').classList.remove('show');
+    editingEntryId = null;
+  }
+});
 
 // Period state
 let currentPeriod = 'today';
