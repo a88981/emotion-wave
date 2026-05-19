@@ -2145,6 +2145,15 @@
       </p>
       <button class="submit-btn secondary" id="syncAllBtn">同步全部歷史紀錄到試算表</button>
 
+      <div class="section-label" style="margin-top: 32px;">從試算表拉資料</div>
+      <p style="color: var(--ink-soft); font-size: 0.88rem; line-height: 1.7; margin-bottom: 14px;">
+        把試算表上有但這台裝置沒有的紀錄拉回來。<br>
+        例如：你在電腦記了東西，想讓手機 app 也看得到。
+      </p>
+      <button class="submit-btn secondary" id="pullBtn">從試算表補回紀錄</button>
+
+      <div id="pullStatus" class="sync-status hidden"></div>
+
       <div class="section-label" style="margin-top: 32px;">設定說明</div>
       <button class="submit-btn secondary" id="setupGuideBtn">查看手把手教學</button>
     </div>
@@ -2243,6 +2252,32 @@
     if (data.action === 'test') {
       return ContentService.createTextOutput(JSON.stringify({
         status: 'ok', message: '連線成功'
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    if (data.action === 'read') {
+      var lastRow = sheet.getLastRow();
+      if (lastRow < 2) {
+        return ContentService.createTextOutput(JSON.stringify({
+          status: 'ok', entries: []
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      var values = sheet.getRange(2, 1, lastRow - 1, 12).getValues();
+      var entries = values.map(function(row) {
+        return {
+          date: row[0] instanceof Date ? row[0].toISOString() : String(row[0] || ''),
+          waveLabel: String(row[3] || ''),
+          mood: String(row[4] || ''),
+          event: String(row[6] || ''),
+          freeNote: String(row[7] || ''),
+          body: String(row[8] || ''),
+          bodyExtra: String(row[9] || ''),
+          association: String(row[10] || ''),
+          threadTitle: String(row[11] || '')
+        };
+      }).filter(function(e) { return e.date && e.mood; });
+      return ContentService.createTextOutput(JSON.stringify({
+        status: 'ok', entries: entries
       })).setMimeType(ContentService.MimeType.JSON);
     }
 
@@ -3784,6 +3819,87 @@ document.getElementById('syncAllBtn').onclick = async () => {
     toast('歷史資料同步完成 ✦');
   } catch (e) {
     showSyncStatus('error', `✗ 同步到第 ${synced} 筆時失敗：${e.message}`);
+  }
+};
+
+// Pull from sheet
+function showPullStatus(type, message) {
+  const el = document.getElementById('pullStatus');
+  el.className = 'sync-status ' + type;
+  el.textContent = message;
+  el.classList.remove('hidden');
+}
+
+function waveLabelToCode(label) {
+  const map = {
+    '高點': 'high', '上升': 'rising', '中點': 'middle',
+    '下降': 'falling', '低點': 'low'
+  };
+  return map[label] || 'middle';
+}
+
+document.getElementById('pullBtn').onclick = async () => {
+  if (!syncConfig.url) { showPullStatus('error', '請先設定 Web App 網址'); return; }
+  showPullStatus('loading', '從試算表讀取中…');
+  try {
+    const r = await syncRequest({ action: 'read' });
+    const sheetEntries = r.entries || [];
+    if (sheetEntries.length === 0) {
+      showPullStatus('success', '試算表是空的，沒有資料可拉');
+      return;
+    }
+
+    // Build set of existing dates (ISO timestamps) for dedup
+    const existingDates = new Set(state.entries.map(e => e.date));
+
+    let added = 0;
+    sheetEntries.forEach(s => {
+      if (!s.date || existingDates.has(s.date)) return;
+
+      const isMorning = s.waveLabel && s.waveLabel.indexOf('開機') >= 0;
+      const wave = isMorning ? 'middle' : waveLabelToCode(s.waveLabel);
+
+      // Try to match thread by title
+      let threadId = null;
+      if (s.threadTitle) {
+        const thread = state.threads.find(t => t.title === s.threadTitle);
+        if (thread) threadId = thread.id;
+      }
+
+      const bodyArr = s.body ? String(s.body).split('、').filter(x => x.trim()) : [];
+
+      const entry = {
+        id: new Date(s.date).getTime() + Math.floor(Math.random() * 100),
+        mode: isMorning ? 'morning' : (threadId ? 'deep' : 'quick'),
+        isMorning: isMorning,
+        date: s.date,
+        threadId: threadId,
+        wave: wave,
+        mood: s.mood || '',
+        body: bodyArr,
+        bodyExtra: s.bodyExtra || '',
+        association: s.association || '',
+        event: s.event || '',
+        freeNote: s.freeNote || '',
+        trigger: '', innerVoice: '', voice: '', insight: ''
+      };
+      state.entries.push(entry);
+      existingDates.add(s.date);
+      added++;
+    });
+
+    state.entries.sort((a, b) => new Date(b.date) - new Date(a.date));
+    await saveAll();
+    refreshMorningCheck();
+
+    if (added === 0) {
+      showPullStatus('success', '✓ 已是最新狀態，沒有需要補的紀錄');
+    } else {
+      showPullStatus('success', `✓ 補回了 ${added} 筆紀錄`);
+      toast(`補回 ${added} 筆紀錄 ✦`);
+    }
+  } catch (e) {
+    showPullStatus('error', `✗ 讀取失敗：${e.message}`);
   }
 };
 
