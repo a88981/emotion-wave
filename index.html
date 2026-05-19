@@ -3019,6 +3019,18 @@
 
 </div>
 
+<!-- Missing Field Reminder Modal -->
+<div class="modal-bg" id="missingModal">
+  <div class="modal" style="max-width: 360px; text-align: center;">
+    <div style="font-size: 2rem; margin-bottom: 8px;">🌱</div>
+    <h3 style="text-align: center;">還差一點點</h3>
+    <p id="missingMsg" style="text-align: center;">還沒選情緒強度</p>
+    <div class="modal-actions" style="justify-content: center;">
+      <button class="submit-btn" id="missingOkBtn" style="max-width: 160px;">好，我去選</button>
+    </div>
+  </div>
+</div>
+
 <!-- New Thread Modal -->
 <div class="modal-bg" id="threadModal">
   <div class="modal">
@@ -3933,9 +3945,22 @@ async function loadAll() {
   });
 }
 
+function showMissingFieldModal(msg, scrollTargetId) {
+  const m = document.getElementById('missingModal');
+  document.getElementById('missingMsg').textContent = msg;
+  m.classList.add('show');
+  document.getElementById('missingOkBtn').onclick = () => {
+    m.classList.remove('show');
+    if (scrollTargetId) {
+      const el = document.getElementById(scrollTargetId);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+}
+
 document.getElementById('submitBtn').onclick = async () => {
-  if (!state.intensity) { toast('先選情緒強度 ·'); return; }
-  if (!state.mood) { toast('先選一個情緒 ·'); return; }
+  if (!state.intensity) { showMissingFieldModal('還沒選情緒強度', 'intensityTrack'); return; }
+  if (!state.mood) { showMissingFieldModal('還沒選一個情緒', 'moodGrid'); return; }
 
   const threadId = document.getElementById('threadSelect').value || null;
   const isMorningCheck = document.getElementById('morningCheckbox');
