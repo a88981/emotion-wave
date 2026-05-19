@@ -233,6 +233,147 @@
     margin-bottom: 12px;
   }
 
+  /* Intensity slider */
+  .intensity-slider-container {
+    margin-bottom: 16px;
+    padding: 4px 0;
+  }
+
+  .intensity-track {
+    position: relative;
+    height: 44px;
+    cursor: pointer;
+    padding: 18px 16px;
+    margin: 0 -4px;
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .intensity-track-bg {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    right: 16px;
+    height: 8px;
+    transform: translateY(-50%);
+    background: linear-gradient(to right,
+      rgba(232, 145, 122, 0.15) 0%,
+      rgba(232, 145, 122, 0.35) 35%,
+      rgba(232, 145, 122, 0.55) 65%,
+      rgba(212, 100, 80, 0.85) 100%);
+    border-radius: 4px;
+    box-shadow: inset 0 1px 2px rgba(232, 145, 122, 0.1);
+  }
+
+  .intensity-fill {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    height: 8px;
+    transform: translateY(-50%);
+    width: 0;
+    background: linear-gradient(to right,
+      rgba(250, 200, 190, 0.85) 0%,
+      rgba(240, 165, 154, 0.85) 50%,
+      rgba(232, 145, 122, 0.9) 100%);
+    border-radius: 4px;
+    transition: width 0.3s cubic-bezier(.34, 1.56, .64, 1);
+    pointer-events: none;
+  }
+
+  .intensity-thumb {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    width: 24px;
+    height: 24px;
+    transform: translate(-50%, -50%) scale(0);
+    background: #fff;
+    border: 3px solid var(--coral-deep);
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(232, 145, 122, 0.3);
+    transition: left 0.3s cubic-bezier(.34, 1.56, .64, 1),
+                transform 0.25s cubic-bezier(.34, 1.56, .64, 1);
+    pointer-events: none;
+  }
+
+  .intensity-thumb.visible {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .intensity-track:active .intensity-thumb.visible {
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+
+  .intensity-ticks {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    right: 16px;
+    height: 8px;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;
+  }
+
+  .intensity-tick {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.7);
+  }
+
+  .intensity-labels {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 12px;
+    margin-top: 4px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.74rem;
+    color: var(--ink-faint);
+  }
+
+  .intensity-labels span {
+    flex: 1;
+    text-align: center;
+  }
+
+  .intensity-labels span:first-child { text-align: left; }
+  .intensity-labels span:last-child { text-align: right; }
+
+  .intensity-current {
+    text-align: center;
+    margin-top: 14px;
+    font-family: 'Noto Serif TC', serif;
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    min-height: 22px;
+  }
+
+  .intensity-current.selected {
+    color: var(--coral-deep);
+  }
+
+  .intensity-current-text {
+    transition: all 0.3s ease;
+  }
+
+  .intensity-reminder {
+    background: linear-gradient(135deg, rgba(212, 168, 150, 0.18) 0%, rgba(232, 145, 122, 0.08) 100%);
+    border-left: 2px solid var(--coral);
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    border-radius: 0 4px 4px 0;
+  }
+
   .wave-opt {
     padding: 14px 4px 12px;
     background: rgba(255, 255, 255, 0.5);
@@ -306,10 +447,44 @@
   }
 
   .mood-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .mood-category {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .mood-cat-label {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 0 2px;
+  }
+
+  .mood-cat-name {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.82rem;
+    color: var(--coral-deep);
+    letter-spacing: 0.05em;
+  }
+
+  .mood-cat-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+  }
+
+  .mood-cat-chips {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-    margin-bottom: 24px;
+    gap: 6px;
   }
 
   .mood-chip {
@@ -355,10 +530,10 @@
   }
 
   .mood-chip.selected {
-    background: linear-gradient(135deg, rgba(240, 165, 154, 0.95) 0%, rgba(232, 145, 122, 0.95) 100%);
+    background: linear-gradient(135deg, rgba(250, 200, 190, 0.85) 0%, rgba(240, 165, 154, 0.85) 100%);
     color: #fff;
-    border-color: rgba(232, 145, 122, 0.8);
-    box-shadow: 0 4px 12px rgba(232, 145, 122, 0.3);
+    border-color: rgba(232, 145, 122, 0.5);
+    box-shadow: 0 3px 10px rgba(232, 145, 122, 0.2);
   }
 
   .mood-chip.selected .mood-emoji {
@@ -386,12 +561,12 @@
   .region-tab {
     flex: 1;
     min-width: calc(33.33% - 4px);
-    padding: 8px 4px;
-    background: rgba(255, 255, 255, 0.45);
+    padding: 10px 4px;
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 6px;
+    border: 1px solid rgba(232, 145, 122, 0.25);
+    border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: center;
@@ -399,18 +574,22 @@
     font-size: 0.85rem;
     color: var(--ink-soft);
     position: relative;
+    box-shadow: 0 1px 3px rgba(232, 145, 122, 0.08);
   }
 
   .region-tab:hover {
-    background: rgba(255, 255, 255, 0.7);
-    color: var(--ink);
+    background: rgba(255, 255, 255, 1);
+    border-color: var(--coral-light);
+    color: var(--coral-deep);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(232, 145, 122, 0.15);
   }
 
   .region-tab.active {
-    background: linear-gradient(135deg, rgba(240, 165, 154, 0.9) 0%, rgba(232, 145, 122, 0.9) 100%);
+    background: linear-gradient(135deg, rgba(250, 200, 190, 0.85) 0%, rgba(240, 165, 154, 0.85) 100%);
     color: #fff;
-    border-color: rgba(232, 145, 122, 0.7);
-    box-shadow: 0 2px 8px rgba(232, 145, 122, 0.2);
+    border-color: rgba(232, 145, 122, 0.5);
+    box-shadow: 0 2px 8px rgba(232, 145, 122, 0.18);
   }
 
   .region-tab.has-selection::after {
@@ -483,10 +662,10 @@
   }
 
   .body-tag.selected {
-    background: linear-gradient(135deg, rgba(240, 165, 154, 0.9) 0%, rgba(232, 145, 122, 0.9) 100%);
+    background: linear-gradient(135deg, rgba(250, 200, 190, 0.85) 0%, rgba(240, 165, 154, 0.85) 100%);
     color: #fff;
-    border-color: rgba(232, 145, 122, 0.7);
-    box-shadow: 0 2px 8px rgba(232, 145, 122, 0.25);
+    border-color: rgba(232, 145, 122, 0.5);
+    box-shadow: 0 2px 8px rgba(232, 145, 122, 0.18);
   }
 
   .body-region-custom {
@@ -860,6 +1039,14 @@
     margin-bottom: 6px;
   }
 
+  .entry-intensity {
+    color: var(--coral);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    margin-left: 4px;
+    opacity: 0.7;
+  }
+
   .entry-thread-tag {
     display: inline-block;
     font-size: 0.78rem;
@@ -1189,6 +1376,259 @@
   }
 
   /* Period selector */
+  /* View switcher (Trend / Calendar) */
+  .view-switcher {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 8px;
+    padding: 4px;
+    margin-bottom: 14px;
+  }
+
+  .view-btn {
+    padding: 11px 4px;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Noto Serif TC', serif;
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+    letter-spacing: 0.05em;
+  }
+
+  .view-btn:hover {
+    background: rgba(255, 255, 255, 0.6);
+  }
+
+  .view-btn.active {
+    background: linear-gradient(135deg, rgba(250, 200, 190, 0.85) 0%, rgba(240, 165, 154, 0.85) 100%);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(232, 145, 122, 0.18);
+  }
+
+  .view-icon {
+    font-size: 1.05rem;
+    line-height: 1;
+  }
+
+  /* Calendar */
+  .calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .cal-nav-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(232, 145, 122, 0.25);
+    background: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    font-size: 1.4rem;
+    line-height: 1;
+    color: var(--coral-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .cal-nav-btn:hover,
+  .cal-nav-btn:active {
+    background: rgba(255, 255, 255, 1);
+    border-color: var(--coral);
+    transform: scale(1.05);
+  }
+
+  .cal-title {
+    text-align: center;
+  }
+
+  .cal-year {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+    display: block;
+  }
+
+  .cal-month {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.4rem;
+    color: var(--coral-deep);
+    letter-spacing: 0.05em;
+  }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 16px;
+  }
+
+  .cal-weekday {
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    padding: 4px 0;
+    font-family: 'Noto Serif TC', serif;
+  }
+
+  .cal-day {
+    aspect-ratio: 1;
+    background: rgba(255, 255, 255, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-faint);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .cal-day.empty {
+    background: transparent;
+    border: 1px dashed rgba(0,0,0,0.06);
+    cursor: default;
+  }
+
+  .cal-day.future {
+    background: rgba(255, 255, 255, 0.15);
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  .cal-day:not(.empty):not(.future):hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  }
+
+  .cal-day.today {
+    box-shadow: 0 0 0 2px #ffffff;
+  }
+
+  .cal-day-emoji {
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  .cal-day-num {
+    position: absolute;
+    bottom: 2px;
+    right: 4px;
+    font-size: 0.58rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--ink-faint);
+    opacity: 0.7;
+    line-height: 1;
+  }
+
+  .cal-day.future .cal-day-num,
+  .cal-day.empty .cal-day-num,
+  .cal-day:not(:has(.cal-day-emoji)) .cal-day-num {
+    position: static;
+    font-size: 0.7rem;
+    font-style: normal;
+    font-family: 'Noto Serif TC', serif;
+    color: var(--ink-faint);
+    opacity: 0.6;
+  }
+
+  .cal-day.selected-day .cal-day-num {
+    font-weight: bold;
+    color: var(--coral-deep);
+    opacity: 1;
+  }
+
+  .cal-day-count {
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    display: flex;
+    gap: 1.5px;
+  }
+
+  .cal-day-count-dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .cal-legend {
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 6px;
+    font-size: 0.68rem;
+  }
+
+  .cal-legend-row {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3px;
+    margin-bottom: 4px;
+    color: var(--ink-soft);
+    overflow-x: auto;
+  }
+
+  .cal-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .cal-legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .cal-legend-note {
+    margin-top: 6px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--ink-faint);
+    font-size: 0.7rem;
+    line-height: 1.5;
+  }
+
+  .cal-day-detail {
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 8px;
+    border-left: 2px solid var(--coral);
+    animation: fadeIn 0.3s ease;
+  }
+
+  .cal-day-detail-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.95rem;
+    color: var(--coral-deep);
+    margin-bottom: 10px;
+  }
+
   .period-selector {
     display: flex;
     gap: 6px;
@@ -1221,9 +1661,9 @@
   }
 
   .period-btn.active {
-    background: linear-gradient(135deg, rgba(240, 165, 154, 0.95) 0%, rgba(232, 145, 122, 0.95) 100%);
+    background: linear-gradient(135deg, rgba(250, 200, 190, 0.85) 0%, rgba(240, 165, 154, 0.85) 100%);
     color: #fff;
-    box-shadow: 0 2px 8px rgba(232, 145, 122, 0.25);
+    box-shadow: 0 2px 8px rgba(232, 145, 122, 0.18);
   }
 
   /* Period header */
@@ -1722,26 +2162,22 @@
     gap: 10px;
     padding: 12px 14px;
     margin-bottom: 16px;
-    background: linear-gradient(135deg,
-      rgba(255, 235, 220, 0.5) 0%,
-      rgba(255, 220, 215, 0.4) 100%);
-    border: 1px solid rgba(255, 220, 210, 0.6);
-    border-radius: 8px;
+    background: rgba(155, 138, 163, 0.06);
+    border: 1px solid rgba(155, 138, 163, 0.3);
+    border-radius: 2px;
     cursor: pointer;
     transition: all 0.3s ease;
     user-select: none;
   }
 
   .morning-check:hover {
-    background: linear-gradient(135deg,
-      rgba(255, 235, 220, 0.7) 0%,
-      rgba(255, 220, 215, 0.6) 100%);
+    background: rgba(155, 138, 163, 0.1);
   }
 
   .morning-check input[type="checkbox"] {
     width: 18px;
     height: 18px;
-    accent-color: var(--coral);
+    accent-color: var(--mist);
     cursor: pointer;
     margin: 0;
   }
@@ -1752,60 +2188,48 @@
 
   .morning-check-text {
     font-family: 'Noto Serif TC', serif;
-    font-size: 0.9rem;
+    font-style: italic;
+    font-size: 0.88rem;
     color: var(--ink-soft);
+    line-height: 1.6;
     flex: 1;
   }
 
   .morning-check input:checked ~ .morning-check-text {
-    color: var(--coral-deep);
+    color: var(--mist);
   }
 
-  /* Backup reminder banner */
+  /* Backup reminder banner (footer style) */
   .backup-reminder {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 14px;
-    margin-bottom: 14px;
-    background: linear-gradient(135deg,
-      rgba(122, 138, 107, 0.12) 0%,
-      rgba(255, 255, 255, 0.5) 100%);
-    border: 1px solid rgba(122, 138, 107, 0.2);
-    border-radius: 6px;
-    font-size: 0.85rem;
-    color: var(--ink-soft);
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 14px 4px;
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    text-align: center;
   }
 
   .backup-reminder-icon {
-    font-size: 1.05rem;
+    font-size: 0.95rem;
     flex-shrink: 0;
+    opacity: 0.7;
   }
 
   .backup-reminder-text {
-    flex: 1;
-    line-height: 1.5;
+    line-height: 1.6;
     font-family: 'Noto Serif TC', serif;
+    font-style: normal;
+    font-size: 0.78rem;
   }
 
   .backup-reminder-text a {
     color: var(--coral-deep);
     text-decoration: underline;
     text-underline-offset: 2px;
-  }
-
-  .backup-reminder-close {
-    background: transparent;
-    border: none;
-    color: var(--ink-faint);
-    cursor: pointer;
-    font-size: 1.1rem;
-    padding: 0 4px;
-    line-height: 1;
-  }
-
-  .backup-reminder-close:hover {
-    color: var(--ink);
   }
 
   /* Hierarchical (year/month) history view */
@@ -1950,9 +2374,9 @@
   }
 
   .mode-tab.active {
-    background: linear-gradient(135deg, var(--coral) 0%, var(--coral-deep) 100%);
+    background: linear-gradient(135deg, rgba(250, 200, 190, 0.85) 0%, rgba(240, 165, 154, 0.85) 100%);
     color: #fff;
-    box-shadow: 0 2px 8px rgba(232, 145, 122, 0.25);
+    box-shadow: 0 2px 8px rgba(232, 145, 122, 0.18);
   }
 
   .mode-icon {
@@ -2025,7 +2449,7 @@
   @media (max-width: 600px) {
     .container { padding: 20px 16px 60px; }
     .card { padding: 24px 18px; }
-    .mood-grid { grid-template-columns: repeat(3, 1fr); }
+    .mood-cat-chips { grid-template-columns: repeat(3, 1fr); }
     .wave-options { grid-template-columns: repeat(5, 1fr); gap: 4px; }
     .wave-icon { font-size: 1.1rem; }
     .wave-label { font-size: 0.65rem; }
@@ -2066,35 +2490,46 @@
   <!-- RECORD (unified) -->
   <div id="tab-record" class="tab-content">
 
-    <!-- Backup reminder (only shows if 7+ days without backup AND no sheet sync) -->
-    <div id="backupReminder" class="backup-reminder hidden">
-      <span class="backup-reminder-icon">🌱</span>
-      <span class="backup-reminder-text">
-        記了一陣子了，<a href="#" id="backupReminderLink">備份一下</a>避免意外消失
-      </span>
-      <button class="backup-reminder-close" onclick="dismissBackupReminder()">×</button>
-    </div>
-
     <div class="card">
 
       <!-- Morning check (only visible if no morning entry today yet) -->
       <label class="morning-check hidden" id="morningCheck">
         <input type="checkbox" id="morningCheckbox" />
         <span class="morning-check-icon">🤍</span>
-        <span class="morning-check-text">這是今早醒來的第一個感受</span>
+        <span class="morning-check-text">這是今天醒來的第一個感受</span>
       </label>
 
-      <div class="section-label">情緒波 · the wave</div>
-      <p class="question">此刻，你在波的哪個位置？<span class="required-mark">*</span></p>
-      <div class="wave-options" id="waveSel">
-        <div class="wave-opt" data-pos="high"><span class="wave-icon">⌒</span><span class="wave-label">高點</span></div>
-        <div class="wave-opt" data-pos="rising"><span class="wave-icon">⤴</span><span class="wave-label">上升</span></div>
-        <div class="wave-opt" data-pos="middle"><span class="wave-icon">—</span><span class="wave-label">中點</span></div>
-        <div class="wave-opt" data-pos="falling"><span class="wave-icon">⤵</span><span class="wave-label">下降</span></div>
-        <div class="wave-opt" data-pos="low"><span class="wave-icon">⌣</span><span class="wave-label">低點</span></div>
+      <div class="section-label">情緒強度 · intensity</div>
+      <p class="question">這份感受有多強？<span class="required-mark">*</span></p>
+
+      <div class="intensity-slider-container">
+        <div class="intensity-track" id="intensityTrack">
+          <div class="intensity-track-bg"></div>
+          <div class="intensity-fill" id="intensityFill"></div>
+          <div class="intensity-thumb" id="intensityThumb"></div>
+          <div class="intensity-ticks">
+            <span class="intensity-tick" data-level="1"></span>
+            <span class="intensity-tick" data-level="2"></span>
+            <span class="intensity-tick" data-level="3"></span>
+            <span class="intensity-tick" data-level="4"></span>
+            <span class="intensity-tick" data-level="5"></span>
+          </div>
+        </div>
+        <div class="intensity-labels">
+          <span>微微</span>
+          <span>有點</span>
+          <span>明顯</span>
+          <span>很強</span>
+          <span>淹沒</span>
+        </div>
+        <div class="intensity-current" id="intensityCurrent">
+          <span class="intensity-current-text">尚未選擇</span>
+        </div>
       </div>
 
-      <div id="waveReminder" class="wave-reminder hidden"></div>
+      <div id="intensityReminder" class="intensity-reminder hidden">
+        <span>這個強度，建議等波走完再做決定 ~</span>
+      </div>
 
       <div class="section-label">情緒色彩 · color<span class="required-mark">*</span></div>
       <div class="mood-grid" id="moodGrid"></div>
@@ -2119,13 +2554,13 @@
 
       <div class="body-summary" id="bodySummary"></div>
 
-      <div class="section-label" style="margin-top: 24px;">聯想 · association</div>
-      <p class="body-intro">如果有東西自己浮上來——一個名字、一個情境、一個畫面——就標記它。沒有也沒關係。</p>
-      <input type="text" id="association" placeholder="什麼自己浮上來了？（逗號分隔多個關鍵字）" />
-
       <div class="section-label" style="margin-top: 24px;">事件 · event</div>
       <p class="body-intro">發生了什麼事？看到、聽到、想到什麼，讓你有了這個情緒？可以寫一句話。</p>
       <textarea id="event" rows="3" placeholder="例如：看到他回我訊息了 / 客戶又改稿 / 早上跟家人吵架"></textarea>
+
+      <div class="section-label" style="margin-top: 24px;">聯想 · association</div>
+      <p class="body-intro">如果有東西自己浮上來——一個名字、一個情境、一個畫面——就標記它。沒有也沒關係。</p>
+      <input type="text" id="association" placeholder="什麼自己浮上來了？（逗號分隔多個關鍵字）" />
 
       <!-- Thread zone -->
       <div class="thread-zone">
@@ -2155,6 +2590,14 @@
       </div>
 
       <button class="submit-btn" id="submitBtn">記下此刻</button>
+    </div>
+
+    <!-- Backup reminder (footer style, only shows if 5+ entries, 7+ days no backup, no sheet sync) -->
+    <div id="backupReminder" class="backup-reminder hidden">
+      <span class="backup-reminder-icon">🌱</span>
+      <span class="backup-reminder-text">
+        記了一陣子了，到「設定」<a href="#" id="backupReminderLink">備份一下</a>避免資料意外消失
+      </span>
     </div>
   </div>
 
@@ -2225,6 +2668,14 @@
   <!-- HISTORY -->
   <div id="tab-history" class="tab-content hidden">
 
+    <!-- View switcher -->
+    <div class="view-switcher">
+      <button class="view-btn active" data-view="trend">總覽</button>
+      <button class="view-btn" data-view="calendar">情緒地圖</button>
+    </div>
+
+    <!-- Trend view (existing) -->
+    <div id="trendView">
     <!-- Period selector -->
     <div class="period-selector">
       <button class="period-btn active" data-period="today">今日</button>
@@ -2335,6 +2786,47 @@
     </div>
 
     <div id="historyList"></div>
+    </div><!-- /trendView -->
+
+    <!-- Calendar view -->
+    <div id="calendarView" class="hidden">
+      <div class="card">
+        <div class="calendar-header">
+          <button class="cal-nav-btn" id="calPrevBtn" aria-label="上一個月">‹</button>
+          <div class="cal-title">
+            <span class="cal-year" id="calYear">2026</span>
+            <span class="cal-month" id="calMonth">5月</span>
+          </div>
+          <button class="cal-nav-btn" id="calNextBtn" aria-label="下一個月">›</button>
+        </div>
+
+        <div class="calendar-grid">
+          <div class="cal-weekday">一</div>
+          <div class="cal-weekday">二</div>
+          <div class="cal-weekday">三</div>
+          <div class="cal-weekday">四</div>
+          <div class="cal-weekday">五</div>
+          <div class="cal-weekday">六</div>
+          <div class="cal-weekday">日</div>
+          <div id="calDays" style="display: contents;"></div>
+        </div>
+
+        <div class="cal-legend">
+          <div class="cal-legend-row">
+            <span class="cal-legend-item"><span class="cal-legend-dot" style="background: #F2C98A;"></span>正向</span>
+            <span class="cal-legend-item"><span class="cal-legend-dot" style="background: #F5B08A;"></span>焦慮</span>
+            <span class="cal-legend-item"><span class="cal-legend-dot" style="background: #8FAFC7;"></span>低落</span>
+            <span class="cal-legend-item"><span class="cal-legend-dot" style="background: #E7A29B;"></span>憤怒</span>
+            <span class="cal-legend-item"><span class="cal-legend-dot" style="background: #AFA7A4;"></span>疏離</span>
+            <span class="cal-legend-item"><span class="cal-legend-dot" style="background: #B6A4C9;"></span>懸浮</span>
+          </div>
+          <div class="cal-legend-note">色相 = 情緒 · 深淺 = 強度 · 點數 = 那天記了幾筆<br>一天多筆，取最高強度那筆顯示</div>
+        </div>
+
+        <!-- Day detail (shown when a day is tapped) -->
+        <div id="calDayDetail" class="cal-day-detail hidden"></div>
+      </div>
+    </div>
   </div>
 
   <!-- SETTINGS -->
@@ -2738,31 +3230,76 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const MOODS = [
-  { emoji: '😊', name: '開心' },
-  { emoji: '🤩', name: '興奮' },
-  { emoji: '🥹', name: '感動' },
-  { emoji: '😌', name: '平靜' },
-  { emoji: '🥰', name: '滿足' },
-  { emoji: '🥳', name: '期待' },
-  { emoji: '🫨', name: '緊張' },
-  { emoji: '😵‍💫', name: '擔心' },
-  { emoji: '😱', name: '焦慮' },
-  { emoji: '😰', name: '害怕' },
-  { emoji: '😭', name: '難過' },
-  { emoji: '😢', name: '失落' },
-  { emoji: '🥺', name: '委屈' },
-  { emoji: '😤', name: '生氣' },
-  { emoji: '😡', name: '憤怒' },
-  { emoji: '😮‍💨', name: '煩躁' },
-  { emoji: '🤕', name: '受傷' },
-  { emoji: '🫥', name: '孤單' }
+const MOOD_CATEGORIES = [
+  {
+    label: '正向開展',
+    en: 'expansive',
+    moods: [
+      { emoji: '😌', name: '平靜' },
+      { emoji: '🥰', name: '滿足' },
+      { emoji: '😊', name: '開心' },
+      { emoji: '🤩', name: '興奮' }
+    ]
+  },
+  {
+    label: '焦慮緊繃',
+    en: 'anxious',
+    moods: [
+      { emoji: '😵‍💫', name: '擔心' },
+      { emoji: '🫨', name: '緊張' },
+      { emoji: '😰', name: '害怕' },
+      { emoji: '😱', name: '焦慮' }
+    ]
+  },
+  {
+    label: '低落收縮',
+    en: 'contracting',
+    moods: [
+      { emoji: '🥺', name: '委屈' },
+      { emoji: '😢', name: '失落' },
+      { emoji: '😭', name: '難過' },
+      { emoji: '😞', name: '絕望' }
+    ]
+  },
+  {
+    label: '憤怒激烈',
+    en: 'fiery',
+    moods: [
+      { emoji: '😑', name: '不滿' },
+      { emoji: '😮‍💨', name: '煩躁' },
+      { emoji: '😤', name: '生氣' },
+      { emoji: '😡', name: '憤怒' }
+    ]
+  },
+  {
+    label: '疏離防護',
+    en: 'distancing',
+    moods: [
+      { emoji: '🥶', name: '冷酷' },
+      { emoji: '😒', name: '厭惡' },
+      { emoji: '🫥', name: '孤單' },
+      { emoji: '🤕', name: '受傷' }
+    ]
+  },
+  {
+    label: '懸浮未定',
+    en: 'suspended',
+    moods: [
+      { emoji: '🥳', name: '期待' },
+      { emoji: '🤔', name: '困惑' },
+      { emoji: '😶', name: '麻木' },
+      { emoji: '😶‍🌫️', name: '恍惚' }
+    ]
+  }
 ];
+
+// Flattened list for compatibility with existing code
+const MOODS = MOOD_CATEGORIES.flatMap(c => c.moods);
 
 const BODY = {
   head: ['頭脹', '眉心緊', '太陽穴跳', '後腦沉', '頭輕飄', '腦霧'],
   throat: ['喉嚨堵', '喉嚨緊', '想哭的喉嚨', '說不出話', '嘴唇麻'],
-  core: ['胃部緊', '胃下沉', '太陽神經叢熱', '橫膈緊', '呼吸短', '胃翻攪'],
+  core: ['胃部緊', '胃下沉', '上腹發熱', '橫膈緊', '呼吸短', '胃翻攪'],
   heart: ['胸口悶', '胸口暖', '心揪', '心跳快', '肩膀沉', '胸口空', '胸口輕'],
   root: ['下腹緊', '骨盆鬆', '下背沉', '腰穩定', '坐骨痛'],
   limbs: ['手心冒汗', '手抖', '手腳冰', '腳沒力', '腳浮', '全身發熱', '全身發冷', '皮膚刺']
@@ -2795,6 +3332,7 @@ const WAVE_REMINDERS = {
 const state = {
   currentTab: 'record',
   wave: null,
+  intensity: null,
   mood: null,
   body: [],
   entries: [],
@@ -2833,33 +3371,164 @@ if (!window.storage || typeof window.storage.get !== 'function') {
   };
 }
 
+// Map mood name to its category valence
+const MOOD_VALENCE = {};
+MOOD_CATEGORIES.forEach(cat => {
+  let v = 'neutral';
+  if (cat.en === 'expansive') v = 'positive';
+  else if (['anxious', 'contracting', 'fiery', 'distancing'].includes(cat.en)) v = 'negative';
+  // 'suspended' = neutral
+  cat.moods.forEach(m => { MOOD_VALENCE[m.name] = v; });
+});
+
+// Given mood + intensity, infer wave position for charting
+function inferWaveFromIntensity(mood, intensity) {
+  const v = MOOD_VALENCE[mood] || 'neutral';
+  const i = intensity || 3;
+  if (v === 'positive') {
+    if (i >= 4) return 'high';
+    if (i >= 2) return 'rising';
+    return 'middle';
+  }
+  if (v === 'negative') {
+    if (i >= 4) return 'low';
+    if (i >= 2) return 'falling';
+    return 'middle';
+  }
+  return 'middle';
+}
+
+function waveToNumeric(wave) {
+  return { high: 5, rising: 4, middle: 3, falling: 2, low: 1 }[wave] || 3;
+}
+
+// Convert old wave position to approximated intensity (for migrating old entries)
+function legacyWaveToIntensity(wave) {
+  return { high: 5, low: 5, rising: 3, falling: 3, middle: 2 }[wave] || 3;
+}
+
+function bindIntensitySelector() {
+  const track = document.getElementById('intensityTrack');
+  const fill = document.getElementById('intensityFill');
+  const thumb = document.getElementById('intensityThumb');
+  const reminder = document.getElementById('intensityReminder');
+  const currentEl = document.getElementById('intensityCurrent');
+  const currentText = currentEl.querySelector('.intensity-current-text');
+
+  const LEVEL_TEXTS = ['', '微微', '有點', '明顯', '很強', '淹沒'];
+
+  function setIntensity(level) {
+    level = Math.max(1, Math.min(5, level));
+    state.intensity = level;
+
+    // Calculate fill width and thumb position (0% at level 1, 100% at level 5)
+    const percent = ((level - 1) / 4) * 100;
+    // Track usable width = trackInnerWidth (left 16, right 16)
+    // We use percentage with inset positions
+    const trackRect = track.getBoundingClientRect();
+    const usableWidth = trackRect.width - 32; // minus 16+16 padding
+    const offsetPx = 16 + (usableWidth * percent / 100);
+
+    fill.style.width = (usableWidth * percent / 100) + 'px';
+    thumb.style.left = offsetPx + 'px';
+    thumb.classList.add('visible');
+
+    // Update label
+    currentText.textContent = `${level} · ${LEVEL_TEXTS[level]}`;
+    currentEl.classList.add('selected');
+
+    // Reminder for high intensity
+    if (level >= 4) {
+      reminder.classList.remove('hidden');
+    } else {
+      reminder.classList.add('hidden');
+    }
+  }
+
+  function calculateLevel(clientX) {
+    const rect = track.getBoundingClientRect();
+    const x = clientX - rect.left - 16; // subtract left padding
+    const usableWidth = rect.width - 32;
+    const percent = Math.max(0, Math.min(1, x / usableWidth));
+    // 5 discrete levels (snap)
+    return Math.round(percent * 4) + 1;
+  }
+
+  let isDragging = false;
+
+  const handleStart = (clientX) => {
+    isDragging = true;
+    setIntensity(calculateLevel(clientX));
+  };
+  const handleMove = (clientX) => {
+    if (!isDragging) return;
+    setIntensity(calculateLevel(clientX));
+  };
+  const handleEnd = () => { isDragging = false; };
+
+  // Mouse
+  track.addEventListener('mousedown', e => { e.preventDefault(); handleStart(e.clientX); });
+  document.addEventListener('mousemove', e => handleMove(e.clientX));
+  document.addEventListener('mouseup', handleEnd);
+
+  // Touch
+  track.addEventListener('touchstart', e => {
+    e.preventDefault();
+    if (e.touches[0]) handleStart(e.touches[0].clientX);
+  }, { passive: false });
+  document.addEventListener('touchmove', e => {
+    if (isDragging && e.touches[0]) {
+      e.preventDefault();
+      handleMove(e.touches[0].clientX);
+    }
+  }, { passive: false });
+  document.addEventListener('touchend', handleEnd);
+
+  // Expose for resetForm
+  window._resetIntensitySlider = () => {
+    state.intensity = null;
+    fill.style.width = '0';
+    thumb.classList.remove('visible');
+    currentText.textContent = '尚未選擇';
+    currentEl.classList.remove('selected');
+    reminder.classList.add('hidden');
+  };
+}
+
 function bindWaveSelector() {
-  document.querySelectorAll('#waveSel .wave-opt').forEach(opt => {
-    opt.onclick = () => {
-      document.querySelectorAll('#waveSel .wave-opt').forEach(x => x.classList.remove('selected'));
-      opt.classList.add('selected');
-      state.wave = opt.dataset.pos;
-      const r = WAVE_REMINDERS[state.wave];
-      const el = document.getElementById('waveReminder');
-      el.innerHTML = `<em>${r.en}</em><span class="zh">${r.zh}</span>`;
-      el.classList.remove('hidden');
-    };
-  });
+  bindIntensitySelector();
 }
 
 function buildMoodGrid() {
   const c = document.getElementById('moodGrid');
   c.innerHTML = '';
-  MOODS.forEach(mood => {
-    const chip = document.createElement('button');
-    chip.className = 'mood-chip';
-    chip.innerHTML = `<span class="mood-emoji">${mood.emoji}</span><span class="mood-name">${mood.name}</span>`;
-    chip.onclick = () => {
-      c.querySelectorAll('.mood-chip').forEach(x => x.classList.remove('selected'));
-      chip.classList.add('selected');
-      state.mood = mood.name;
-    };
-    c.appendChild(chip);
+
+  const onChipClick = (chip, name) => {
+    c.querySelectorAll('.mood-chip').forEach(x => x.classList.remove('selected'));
+    chip.classList.add('selected');
+    state.mood = name;
+  };
+
+  MOOD_CATEGORIES.forEach(cat => {
+    const group = document.createElement('div');
+    group.className = 'mood-category';
+    group.innerHTML = `
+      <div class="mood-cat-label">
+        <span class="mood-cat-name">${cat.label}</span>
+        <span class="mood-cat-en">${cat.en}</span>
+      </div>
+      <div class="mood-cat-chips"></div>
+    `;
+    c.appendChild(group);
+
+    const chipsContainer = group.querySelector('.mood-cat-chips');
+    cat.moods.forEach(mood => {
+      const chip = document.createElement('button');
+      chip.className = 'mood-chip';
+      chip.innerHTML = `<span class="mood-emoji">${mood.emoji}</span><span class="mood-name">${mood.name}</span>`;
+      chip.onclick = () => onChipClick(chip, mood.name);
+      chipsContainer.appendChild(chip);
+    });
   });
 }
 
@@ -2872,7 +3541,7 @@ function getMoodEmoji(name) {
 const BODY_HINTS = {
   head: '頭脹、眉心、太陽穴——關於思緒與超載',
   throat: '表達區。說出口的、說不出口的，都會在這裡留訊息',
-  core: '胃部、橫膈膜、太陽神經叢——情緒最直接表達的地方',
+  core: '胃部、橫膈膜、上腹——情緒最直接表達的地方',
   heart: '胸口、心臟、肩頸——關於連結與承受',
   root: '下腹、骨盆、下背——關於安全感與支持',
   limbs: '手、腳、皮膚——情緒外溢的訊號'
@@ -3069,10 +3738,16 @@ async function loadAll() {
   } catch (e) {
     state.entries = []; state.threads = [];
   }
+  // Backfill intensity for old entries that only have wave
+  state.entries.forEach(entry => {
+    if (entry.intensity == null && entry.wave) {
+      entry.intensity = legacyWaveToIntensity(entry.wave);
+    }
+  });
 }
 
 document.getElementById('submitBtn').onclick = async () => {
-  if (!state.wave) { toast('先選波的位置 ·'); return; }
+  if (!state.intensity) { toast('先選情緒強度 ·'); return; }
   if (!state.mood) { toast('先選一個情緒 ·'); return; }
 
   const threadId = document.getElementById('threadSelect').value || null;
@@ -3080,13 +3755,17 @@ document.getElementById('submitBtn').onclick = async () => {
   const isMorningCheck = document.getElementById('morningCheckbox');
   const isMorning = isMorningCheck && isMorningCheck.checked && !document.getElementById('morningCheck').classList.contains('hidden');
 
+  // Infer wave position from mood + intensity (for charting & legacy compatibility)
+  const inferredWave = inferWaveFromIntensity(state.mood, state.intensity);
+
   const entry = {
     id: Date.now(),
     mode: isMorning ? 'morning' : (threadId ? 'deep' : 'quick'),
     isMorning: isMorning,
     date: new Date().toISOString(),
     threadId: threadId,
-    wave: state.wave,
+    wave: inferredWave,
+    intensity: state.intensity,
     mood: state.mood,
     body: [...state.body],
     bodyExtra: '',
@@ -3107,8 +3786,8 @@ document.getElementById('submitBtn').onclick = async () => {
 };
 
 function resetForm() {
-  state.wave = null; state.mood = null; state.body = [];
-  document.querySelectorAll('#waveSel .wave-opt').forEach(x => x.classList.remove('selected'));
+  state.wave = null; state.intensity = null; state.mood = null; state.body = [];
+  if (window._resetIntensitySlider) window._resetIntensitySlider();
   document.querySelectorAll('#moodGrid .mood-chip').forEach(x => x.classList.remove('selected'));
   document.querySelectorAll('.body-tag').forEach(x => x.classList.remove('selected'));
   document.querySelectorAll('.region-tab').forEach(x => {
@@ -3119,7 +3798,8 @@ function resetForm() {
   currentBodyRegion = null;
   Object.keys(customByRegion).forEach(k => customByRegion[k] = '');
   document.getElementById('bodySummary').classList.remove('show');
-  document.getElementById('waveReminder').classList.add('hidden');
+  const ir = document.getElementById('intensityReminder');
+  if (ir) ir.classList.add('hidden');
   ['association', 'event', 'freeNote'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
@@ -3383,7 +4063,7 @@ function renderEntryCard(e, inThread) {
   if (thread && !inThread) {
     html += `<div class="entry-thread-tag">⌒ ${thread.title}</div>`;
   }
-  html += `<div class="entry-mood">${getMoodEmoji(e.mood)} ${e.mood}</div>`;
+  html += `<div class="entry-mood">${getMoodEmoji(e.mood)} ${e.mood}${e.intensity ? ` <span class="entry-intensity">${'●'.repeat(e.intensity)}${'○'.repeat(5 - e.intensity)}</span>` : ''}</div>`;
   if (e.association) {
     html += `<div style="font-size:0.85rem;color:var(--mist);margin-bottom:6px;font-style:italic;font-family:'Cormorant Garamond',serif;">~ ${e.association}</div>`;
   }
@@ -4434,25 +5114,13 @@ async function refreshBackupReminder() {
     return;
   }
 
-  // Don't show if dismissed recently
-  try {
-    const dismissed = await window.storage.get('backup_reminder_dismissed_at');
-    if (dismissed && dismissed.value) {
-      const dismissedAt = new Date(dismissed.value);
-      const daysSince = (Date.now() - dismissedAt.getTime()) / (1000 * 60 * 60 * 24);
-      if (daysSince < 7) {
-        reminder.classList.add('hidden');
-        return;
-      }
-    }
-  } catch (e) {}
-
-  // Show if 7+ days since first entry AND haven't backed up in 7+ days
+  // Show if has at least 5 entries
   if (state.entries.length < 5) {
     reminder.classList.add('hidden');
     return;
   }
 
+  // Hide if backed up within 7 days
   try {
     const last = await window.storage.get('last_backup_at');
     if (last && last.value) {
@@ -4467,13 +5135,6 @@ async function refreshBackupReminder() {
 
   reminder.classList.remove('hidden');
 }
-
-window.dismissBackupReminder = async () => {
-  try {
-    await window.storage.set('backup_reminder_dismissed_at', new Date().toISOString());
-  } catch (e) {}
-  document.getElementById('backupReminder').classList.add('hidden');
-};
 
 document.getElementById('backupReminderLink').onclick = (e) => {
   e.preventDefault();
@@ -4631,12 +5292,190 @@ function refreshMorningCheck() {
   }
 }
 
+// ============= Calendar View =============
+
+// 情緒波色票：六色 × 五階深淺（深 → 淺，對應強度 5 → 1）
+// 色相 = 情緒類別；深淺 = 強度
+const CATEGORY_PALETTE = {
+  expansive:   ['#F2C98A', '#F6D9A8', '#FAE6C3', '#FDF1DE', '#FFF9F0'], // 黃
+  anxious:     ['#F5B08A', '#F7C5A6', '#FAD9C2', '#FDEADF', '#FFF6F2'], // 橘
+  contracting: ['#8FAFC7', '#A8C1D4', '#C1D4E2', '#DCE7EF', '#F1F6FA'], // 藍
+  fiery:       ['#E7A29B', '#EDB6B0', '#F3CAC5', '#F8DEDB', '#FCF0EE'], // 紅
+  distancing:  ['#AFA7A4', '#C1BAB7', '#D4CECB', '#E8E4E2', '#F6F4F3'], // 灰
+  suspended:   ['#B6A4C9', '#C8BAD8', '#D9CFE5', '#EBE5F1', '#F7F4FA']  // 紫
+};
+
+// 強度 1-5 對應五階的索引（1=最淺=索引4, 5=最深=索引0）
+function getCategoryShade(category, intensity) {
+  const palette = CATEGORY_PALETTE[category] || CATEGORY_PALETTE.suspended;
+  const i = Math.max(1, Math.min(5, intensity || 3));
+  return palette[5 - i]; // intensity 1 → palette[4] 最淺；intensity 5 → palette[0] 最深
+}
+
+// 為了相容舊邏輯保留：取該類別最深色的 RGB（用於圖例等）
+const CATEGORY_COLORS = {
+  expansive:   [242, 201, 138],
+  anxious:     [245, 176, 138],
+  contracting: [143, 175, 199],
+  fiery:       [231, 162, 155],
+  distancing:  [175, 167, 164],
+  suspended:   [182, 164, 201]
+};
+
+// Find which category a mood belongs to
+function getMoodCategory(moodName) {
+  for (const cat of MOOD_CATEGORIES) {
+    if (cat.moods.some(m => m.name === moodName)) return cat.en;
+  }
+  return 'suspended';
+}
+
+// Current calendar state
+let calMonth = new Date().getMonth(); // 0-indexed
+let calYear = new Date().getFullYear();
+
+function bindViewSwitcher() {
+  document.querySelectorAll('.view-btn').forEach(btn => {
+    btn.onclick = () => {
+      const view = btn.dataset.view;
+      document.querySelectorAll('.view-btn').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+      document.getElementById('trendView').classList.toggle('hidden', view !== 'trend');
+      document.getElementById('calendarView').classList.toggle('hidden', view !== 'calendar');
+      if (view === 'calendar') renderCalendar();
+    };
+  });
+}
+
+function bindCalendarNav() {
+  document.getElementById('calPrevBtn').onclick = () => {
+    calMonth--;
+    if (calMonth < 0) { calMonth = 11; calYear--; }
+    renderCalendar();
+  };
+  document.getElementById('calNextBtn').onclick = () => {
+    calMonth++;
+    if (calMonth > 11) { calMonth = 0; calYear++; }
+    renderCalendar();
+  };
+}
+
+function renderCalendar() {
+  document.getElementById('calYear').textContent = calYear;
+  document.getElementById('calMonth').textContent = (calMonth + 1) + '月';
+  document.getElementById('calDayDetail').classList.add('hidden');
+
+  // Build day -> entries map
+  const daysMap = {}; // key: 'YYYY-M-D' -> entries[]
+  state.entries.forEach(e => {
+    const d = new Date(e.date);
+    if (d.getFullYear() === calYear && d.getMonth() === calMonth) {
+      const k = d.getDate();
+      if (!daysMap[k]) daysMap[k] = [];
+      daysMap[k].push(e);
+    }
+  });
+
+  // First day of month
+  const firstDay = new Date(calYear, calMonth, 1);
+  // JS getDay: 0=Sun, 1=Mon... convert to 一=0, 二=1, ..., 日=6
+  let firstWeekday = firstDay.getDay(); // 0-6 (Sun-Sat)
+  firstWeekday = firstWeekday === 0 ? 6 : firstWeekday - 1; // Now 0=Mon, 6=Sun
+
+  // Days in month
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+
+  // Today reference
+  const todayDate = new Date();
+  const isCurrentMonth = todayDate.getFullYear() === calYear && todayDate.getMonth() === calMonth;
+  const today = todayDate.getDate();
+
+  const container = document.getElementById('calDays');
+  container.innerHTML = '';
+
+  // Empty cells before day 1
+  for (let i = 0; i < firstWeekday; i++) {
+    const empty = document.createElement('div');
+    empty.className = 'cal-day empty';
+    container.appendChild(empty);
+  }
+
+  // Day cells
+  for (let d = 1; d <= daysInMonth; d++) {
+    const cell = document.createElement('div');
+    cell.className = 'cal-day';
+    const entries = daysMap[d] || [];
+    const isFuture = isCurrentMonth && d > today;
+    const isToday = isCurrentMonth && d === today;
+
+    if (isFuture && entries.length === 0) {
+      cell.classList.add('future');
+      cell.innerHTML = `<span class="cal-day-num">${d}</span>`;
+      container.appendChild(cell);
+      continue;
+    }
+
+    if (entries.length === 0) {
+      // No entries this day (but not future)
+      cell.innerHTML = `<span class="cal-day-num">${d}</span>`;
+      container.appendChild(cell);
+      continue;
+    }
+
+    // Find the strongest entry
+    const strongest = entries.reduce((a, b) => (b.intensity || 0) > (a.intensity || 0) ? b : a);
+    const category = getMoodCategory(strongest.mood);
+    const intensity = strongest.intensity || 3;
+    // 色相 = 類別，深淺 = 強度（色票自己已經傳達強度，不再額外描邊）
+    const bgColor = getCategoryShade(category, intensity);
+    cell.style.background = bgColor;
+    cell.style.border = 'none';
+
+    if (isToday) cell.classList.add('today');
+    if (isToday) cell.classList.add('today');
+
+    const emoji = getMoodEmoji(strongest.mood) || '·';
+    // Show count as dots (max 3 visible, beyond shows ●●●+)
+    let countBadge = '';
+    if (entries.length > 1) {
+      const max = Math.min(entries.length, 3);
+      const dots = Array.from({length: max}, () => '<span class="cal-day-count-dot"></span>').join('');
+      countBadge = `<span class="cal-day-count">${dots}</span>`;
+    }
+
+    cell.innerHTML = `
+      ${countBadge}
+      <span class="cal-day-emoji">${emoji}</span>
+      <span class="cal-day-num">${d}</span>
+    `;
+
+    cell.onclick = () => showCalendarDayDetail(d, entries);
+    container.appendChild(cell);
+  }
+}
+
+function showCalendarDayDetail(day, entries) {
+  document.querySelectorAll('.cal-day.selected-day').forEach(c => c.classList.remove('selected-day'));
+  const detail = document.getElementById('calDayDetail');
+  const dateLabel = `${calMonth + 1}月${day}日`;
+  const sorted = [...entries].sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  detail.innerHTML = `
+    <div class="cal-day-detail-title">${dateLabel} · ${entries.length} 筆</div>
+    ${sorted.map(e => renderEntryCard(e, false)).join('')}
+  `;
+  detail.classList.remove('hidden');
+  // Scroll detail into view
+  setTimeout(() => detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+}
+
 (async function init() {
   bindWaveSelector();
   buildMoodGrid();
   buildBodyRegions();
   buildVoicePrompts();
   bindPeriodSelector();
+  bindViewSwitcher();
+  bindCalendarNav();
   await loadAll();
   await loadSyncConfig();
   await loadSettingsMode();
