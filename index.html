@@ -1064,14 +1064,35 @@
   }
 
   .entry-event {
-    font-size: 0.88rem;
-    color: var(--ink-soft);
     margin-bottom: 8px;
-    padding: 8px 12px;
+    padding: 10px 14px;
     background: rgba(255, 255, 255, 0.5);
     border-left: 2px solid var(--coral-light);
     border-radius: 4px;
+  }
+
+  .entry-event-title {
+    font-size: 0.95rem;
+    color: var(--ink);
+    line-height: 1.5;
+    font-weight: 500;
+  }
+
+  .entry-event-feeling {
+    margin-top: 6px;
+    font-size: 0.86rem;
+    color: var(--ink-soft);
     line-height: 1.6;
+    padding-left: 2px;
+  }
+
+  .entry-association {
+    font-size: 0.85rem;
+    color: var(--mist);
+    margin-bottom: 8px;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    line-height: 1.5;
   }
 
   .entry-text {
@@ -2449,7 +2470,9 @@
   @media (max-width: 600px) {
     .container { padding: 20px 16px 60px; }
     .card { padding: 24px 18px; }
-    .mood-cat-chips { grid-template-columns: repeat(3, 1fr); }
+    .mood-cat-chips { grid-template-columns: repeat(4, 1fr); gap: 5px; }
+    .mood-chip { padding: 9px 2px; }
+    .mood-name { font-size: 0.78rem; }
     .wave-options { grid-template-columns: repeat(5, 1fr); gap: 4px; }
     .wave-icon { font-size: 1.1rem; }
     .wave-label { font-size: 0.65rem; }
@@ -2556,11 +2579,15 @@
 
       <div class="section-label" style="margin-top: 24px;">事件 · event</div>
       <p class="body-intro">發生了什麼事？看到、聽到、想到什麼，讓你有了這個情緒？可以寫一句話。</p>
-      <textarea id="event" rows="3" placeholder="例如：看到他回我訊息了 / 客戶又改稿 / 早上跟家人吵架"></textarea>
+      <textarea id="event" rows="2" placeholder="例如：看到他回我訊息了 / 客戶又改稿 / 早上跟家人吵架"></textarea>
+
+      <div class="section-label" style="margin-top: 24px;">感受 · feeling</div>
+      <p class="body-intro">那個當下，你怎麼解讀這件事？它讓你有什麼感覺？</p>
+      <textarea id="feeling" rows="3" placeholder="例如：他沒回讓我覺得不被重視 / 客戶反覆改稿讓我懷疑自己 / 家人說那句話讓我覺得不被理解"></textarea>
 
       <div class="section-label" style="margin-top: 24px;">聯想 · association</div>
-      <p class="body-intro">如果有東西自己浮上來——一個名字、一個情境、一個畫面——就標記它。沒有也沒關係。</p>
-      <input type="text" id="association" placeholder="什麼自己浮上來了？（逗號分隔多個關鍵字）" />
+      <p class="body-intro">如果有東西自己浮上來——一個畫面、一段記憶、一個比喻——就標記它。這跟眼前的事可能無關，但就是浮上來了。</p>
+      <input type="text" id="association" placeholder="例如：黑洞 / 小時候媽媽罵我那種 / 被丟下的感覺" />
 
       <!-- Thread zone -->
       <div class="thread-zone">
@@ -2996,7 +3023,7 @@
         <div class="guide-step-body">
           <p>打開 Google 試算表，建一個新的，名稱可以叫「情緒波」。</p>
           <p>在第一列（第 1 行）填入這些欄位名稱（從 A 欄到 L 欄）：</p>
-          <div class="code-block" id="headerRow">時間	日期	時段	波位	情緒	emoji	事件	想說的話	身體訊息	其他身體	聯想	追蹤線<button class="code-copy-btn" onclick="copyCode('headerRow')">複製</button></div>
+          <div class="code-block" id="headerRow">時間	日期	時段	波位	情緒	emoji	事件	感受	想說的話	身體訊息	其他身體	聯想	追蹤線<button class="code-copy-btn" onclick="copyCode('headerRow')">複製</button></div>
           <p>把整段複製、貼到 A1 儲存格——Google 會自動展開到 L1。</p>
         </div>
       </div>
@@ -3034,18 +3061,19 @@
       var entries = [];
       var lastRow = sheet.getLastRow();
       if (lastRow >= 2) {
-        var values = sheet.getRange(2, 1, lastRow - 1, 12).getValues();
+        var values = sheet.getRange(2, 1, lastRow - 1, 13).getValues();
         entries = values.map(function(row) {
           return {
             date: row[0] instanceof Date ? row[0].toISOString() : String(row[0] || ''),
             waveLabel: String(row[3] || ''),
             mood: String(row[4] || ''),
             event: String(row[6] || ''),
-            freeNote: String(row[7] || ''),
-            body: String(row[8] || ''),
-            bodyExtra: String(row[9] || ''),
-            association: String(row[10] || ''),
-            threadTitle: String(row[11] || '')
+            feeling: String(row[7] || ''),
+            freeNote: String(row[8] || ''),
+            body: String(row[9] || ''),
+            bodyExtra: String(row[10] || ''),
+            association: String(row[11] || ''),
+            threadTitle: String(row[12] || '')
           };
         }).filter(function(e) { return e.date && e.mood; });
       }
@@ -3115,6 +3143,7 @@
           entry.mood || '',
           entry.emoji || '',
           entry.event || '',
+          entry.feeling || '',
           entry.freeNote || '',
           (entry.body || []).join('、'),
           entry.bodyExtra || '',
@@ -3771,6 +3800,7 @@ document.getElementById('submitBtn').onclick = async () => {
     bodyExtra: '',
     association: document.getElementById('association').value.trim(),
     event: document.getElementById('event').value.trim(),
+    feeling: document.getElementById('feeling').value.trim(),
     freeNote: freeNote,
     // Legacy fields kept empty for backward compatibility
     trigger: '', innerVoice: '', voice: '', insight: ''
@@ -3800,7 +3830,7 @@ function resetForm() {
   document.getElementById('bodySummary').classList.remove('show');
   const ir = document.getElementById('intensityReminder');
   if (ir) ir.classList.add('hidden');
-  ['association', 'event', 'freeNote'].forEach(id => {
+  ['association', 'event', 'feeling', 'freeNote'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
@@ -4064,11 +4094,16 @@ function renderEntryCard(e, inThread) {
     html += `<div class="entry-thread-tag">⌒ ${thread.title}</div>`;
   }
   html += `<div class="entry-mood">${getMoodEmoji(e.mood)} ${e.mood}${e.intensity ? ` <span class="entry-intensity">${'●'.repeat(e.intensity)}${'○'.repeat(5 - e.intensity)}</span>` : ''}</div>`;
-  if (e.association) {
-    html += `<div style="font-size:0.85rem;color:var(--mist);margin-bottom:6px;font-style:italic;font-family:'Cormorant Garamond',serif;">~ ${e.association}</div>`;
+  // 事件 + 感受：綁在同一個敘事容器
+  if (e.event || e.feeling) {
+    html += `<div class="entry-event">`;
+    if (e.event) html += `<div class="entry-event-title">${e.event}</div>`;
+    if (e.feeling) html += `<div class="entry-event-feeling">${e.feeling}</div>`;
+    html += `</div>`;
   }
-  if (e.event) {
-    html += `<div class="entry-event">📍 ${e.event}</div>`;
+  // 聯想：獨立區塊
+  if (e.association) {
+    html += `<div class="entry-association">～ ${e.association}</div>`;
   }
   if (e.body && e.body.length) {
     html += `<div class="entry-body">${e.body.join(' · ')}${e.bodyExtra ? ' · ' + e.bodyExtra : ''}</div>`;
@@ -4554,11 +4589,11 @@ function buildAnalysisPackage() {
   let text = `[情緒波 · ${label}回顧 · ${subtitle}]\n\n`;
   text += `請幫我觀察以下這段時間的情緒紀錄。\n\n`;
   text += `我想看見：\n`;
-  text += `1. 波是否有走完整週期（高 → 中 → 低 → 中），還是卡在某一端？\n`;
-  text += `2. 哪些聯想主題反覆出現？它們的波位分佈說明了什麼？\n`;
-  text += `3. 哪些情緒可能是「純粹的身體波動」，哪些可能是事件影響？\n`;
-  text += `4. 有什麼我可能沒看見的模式？\n`;
-  text += `5. 不要給建議，只要觀察與映照。\n\n`;
+  text += `1. 我這段時間的情緒有沒有自然走完，還是卡在某一端？\n`;
+  text += `2. 「事件 → 感受」之間，我的解讀模式是什麼？有沒有重複出現的內在邏輯？\n`;
+  text += `3. 哪些聯想反覆浮上來？它們在說什麼？\n`;
+  text += `4. 身體訊息跟情緒之間有什麼對應關係？\n`;
+  text += `5. 有什麼我可能沒看見的模式？\n\n`;
   text += `━━━━━━━━━━━━━━━━━━━━\n`;
   text += `本期數據\n`;
   text += `━━━━━━━━━━━━━━━━━━━━\n`;
@@ -4581,6 +4616,53 @@ function buildAnalysisPackage() {
   text += `情緒色彩：\n`;
   moodList.forEach(([m, c]) => { text += `· ${m} ×${c}\n`; });
   text += `\n`;
+
+  // === C1: 強度高峰（intensity 4-5） ===
+  const highIntensityEntries = entries.filter(e => (e.intensity || 0) >= 4);
+  if (highIntensityEntries.length > 0) {
+    const highDays = new Set(highIntensityEntries.map(e => new Date(e.date).toDateString()));
+    const highMoodCount = {};
+    highIntensityEntries.forEach(e => highMoodCount[e.mood] = (highMoodCount[e.mood] || 0) + 1);
+    const highMoodList = Object.entries(highMoodCount).sort((a,b) => b[1]-a[1]);
+    text += `強度高峰（4-5）：\n`;
+    text += `· 共 ${highIntensityEntries.length} 筆 / 跨越 ${highDays.size} 天\n`;
+    text += `· 主要情緒：${highMoodList.map(([m,c]) => `${m} ×${c}`).join('、')}\n\n`;
+  }
+
+  // === C3: 身體 × 情緒類別交叉 ===
+  const bodyByCategory = {};
+  entries.forEach(e => {
+    if (!e.body || !e.body.length) return;
+    const cat = getMoodCategory(e.mood);
+    if (!bodyByCategory[cat]) bodyByCategory[cat] = {};
+    e.body.forEach(b => {
+      bodyByCategory[cat][b] = (bodyByCategory[cat][b] || 0) + 1;
+    });
+  });
+  const categoryLabels = {
+    expansive: '正向開展', anxious: '焦慮緊繃', contracting: '低落收縮',
+    fiery: '憤怒激烈', distancing: '疏離防護', suspended: '懸浮未定'
+  };
+  const bodyCatKeys = Object.keys(bodyByCategory);
+  if (bodyCatKeys.length > 0) {
+    text += `身體訊息 × 情緒類別：\n`;
+    bodyCatKeys.forEach(cat => {
+      const topBodies = Object.entries(bodyByCategory[cat])
+        .sort((a,b) => b[1]-a[1])
+        .slice(0, 3)
+        .map(([b,c]) => `${b} ×${c}`).join('、');
+      text += `· ${categoryLabels[cat] || cat}：${topBodies}\n`;
+    });
+    text += `\n`;
+  }
+
+  // === D3: 本期感受全集 ===
+  const feelingList = entries.filter(e => e.feeling && e.feeling.trim()).map(e => e.feeling.trim());
+  if (feelingList.length > 0) {
+    text += `本期感受全集：\n`;
+    feelingList.forEach(f => { text += `· ${f}\n`; });
+    text += `\n`;
+  }
 
   if (assocList.length > 0) {
     text += `事件聯想分佈：\n`;
@@ -4620,6 +4702,7 @@ function buildAnalysisPackage() {
     if (e.bodyExtra) text += `、${e.bodyExtra}`;
     text += `\n`;
     if (e.event) text += `  事件：${e.event}\n`;
+    if (e.feeling) text += `  感受：${e.feeling}\n`;
     if (e.freeNote) text += `  想說的話：${e.freeNote}\n`;
     if (e.trigger) text += `  觸發：${e.trigger}\n`;
     if (e.innerVoice) text += `  內在反詢：${e.innerVoice}\n`;
@@ -4812,6 +4895,7 @@ function entryToSyncPayload(entry) {
     mood: entry.mood,
     emoji: getMoodEmoji(entry.mood),
     event: entry.event || '',
+    feeling: entry.feeling || '',
     freeNote: entry.freeNote || '',
     body: entry.body || [],
     bodyExtra: entry.bodyExtra || '',
@@ -5223,6 +5307,7 @@ document.getElementById('pullBtn').onclick = async () => {
         bodyExtra: s.bodyExtra || '',
         association: s.association || '',
         event: s.event || '',
+        feeling: s.feeling || '',
         freeNote: s.freeNote || '',
         trigger: '', innerVoice: '', voice: '', insight: ''
       };
