@@ -2574,6 +2574,8 @@
     .stats-grid { grid-template-columns: 1fr; gap: 10px; }
     .tab { font-size: 0.86rem; padding: 12px 4px; }
     .help-btn { top: 16px; right: 16px; }
+    textarea::placeholder, input::placeholder { font-size: 0.72rem; }
+    .body-intro { font-size: 0.7rem; }
   }
 </style>
 </head>
@@ -2695,12 +2697,12 @@
 
       <!-- 5. Feeling -->
       <div class="section-label" style="margin-top: 24px;">感受 · feeling <span class="optional-mark">(可選)</span></div>
-      <p class="body-intro">那個當下，你怎麼解讀這件事？它讓你有什麼感覺？</p>
+      <p class="body-intro">這個當下，你怎麼解讀這個感受？它讓你有什麼感覺？</p>
       <textarea id="feeling" rows="3" placeholder="例如：他沒回讓我覺得不被重視 / 客戶反覆改稿讓我懷疑自己 / 家人說那句話讓我覺得不被理解"></textarea>
 
       <!-- 6. Association -->
       <div class="section-label" style="margin-top: 24px;">聯想 · association <span class="optional-mark">(可選)</span></div>
-      <p class="body-intro">如果有東西自己浮上來——一個畫面、一段記憶、一個比喻——就標記它。這跟眼前的事可能無關，但就是浮上來了。</p>
+      <p class="body-intro">如果有東西自己浮上來——畫面、記憶、比喻——就標記它。</p>
       <input type="text" id="association" placeholder="例如：黑洞 / 小時候媽媽罵我那種 / 被丟下的感覺" />
 
       <button class="submit-btn" id="submitBtn">記下此刻</button>
@@ -2946,30 +2948,28 @@
   <!-- SETTINGS -->
   <div id="tab-settings" class="tab-content hidden">
     <div class="card">
-      <p style="color: var(--ink-soft); font-size: 0.85rem; line-height: 1.7; margin-bottom: 14px; font-style: italic;">
-        告訴情緒波你打算怎麼用，畫面會顯示對應的選項。
-      </p>
 
-      <div class="mode-switcher">
-        <button class="mode-tab active" data-mode="solo">
-          <span class="mode-icon">📱</span>
-          <span class="mode-label">純手機</span>
-        </button>
-        <button class="mode-tab" data-mode="multi">
-          <span class="mode-icon">💻</span>
-          <span class="mode-label">雙機</span>
-        </button>
-        <button class="mode-tab" data-mode="all">
-          <span class="mode-icon">⚙</span>
-          <span class="mode-label">全部</span>
-        </button>
+      <!-- 本機備份（在上） -->
+      <div class="setting-block">
+        <div class="section-label">本機備份 · backup</div>
+        <p style="color: var(--ink-soft); font-size: 0.88rem; line-height: 1.7; margin-bottom: 14px;">
+          把資料匯出成檔案，存到 iCloud、Google Drive 或寄給自己。<br>
+          <strong style="color: var(--coral-deep); font-weight: 400;">如果沒有設定試算表同步，建議每週匯出一次。</strong>
+        </p>
+        <button class="submit-btn secondary" id="exportDataBtn" style="margin-bottom: 8px;">📦 匯出全部資料</button>
+        <button class="submit-btn secondary" id="importDataBtn">📥 從檔案匯入</button>
+        <input type="file" id="importFileInput" accept=".json" style="display: none;" />
+
+        <div id="backupStatus" class="sync-status hidden"></div>
+
+        <p style="color: var(--ink-faint); font-size: 0.78rem; font-style: italic; margin-top: 14px; line-height: 1.6;">
+          匯入時：app 已有的紀錄不會被覆蓋，只會補進沒有的部分。<br>
+          換手機時：先在舊手機匯出 → 傳到新手機 → 在新手機匯入。
+        </p>
       </div>
-      <p class="mode-hint" id="modeHint">只用手機記錄。資料存在這台手機，建議每週備份一次。</p>
-    </div>
 
-    <div class="card">
-      <!-- 雙機 / 全部 mode: Google 試算表 -->
-      <div class="setting-block" data-modes="multi all">
+      <!-- Google 試算表同步（在下） -->
+      <div class="setting-block" style="margin-top: 36px;">
         <div class="section-label">Google 試算表同步</div>
         <p style="color: var(--ink-soft); font-size: 0.9rem; line-height: 1.7; margin-bottom: 16px;">
           把每筆紀錄自動寫入你的 Google 試算表。第一次設定大約 15 分鐘，之後就會在後台自動運作。
@@ -3013,25 +3013,6 @@
 
         <div class="section-label" style="margin-top: 32px;">設定說明</div>
         <button class="submit-btn secondary" id="setupGuideBtn">查看手把手教學</button>
-      </div>
-
-      <!-- 純手機 / 全部 mode: 本機備份 -->
-      <div class="setting-block" data-modes="solo all">
-        <div class="section-label">本機備份 · backup</div>
-        <p style="color: var(--ink-soft); font-size: 0.88rem; line-height: 1.7; margin-bottom: 14px;">
-          把資料匯出成檔案，存到 iCloud、Google Drive 或寄給自己。<br>
-          <strong style="color: var(--coral-deep); font-weight: 400;">如果沒有設定試算表同步，建議每週匯出一次。</strong>
-        </p>
-        <button class="submit-btn secondary" id="exportDataBtn" style="margin-bottom: 8px;">📦 匯出全部資料</button>
-        <button class="submit-btn secondary" id="importDataBtn">📥 從檔案匯入</button>
-        <input type="file" id="importFileInput" accept=".json" style="display: none;" />
-
-        <div id="backupStatus" class="sync-status hidden"></div>
-
-        <p style="color: var(--ink-faint); font-size: 0.78rem; font-style: italic; margin-top: 14px; line-height: 1.6;">
-          匯入時：app 已有的紀錄不會被覆蓋，只會補進沒有的部分。<br>
-          換手機時：先在舊手機匯出 → 傳到新手機 → 在新手機匯入。
-        </p>
       </div>
     </div>
   </div>
@@ -5330,47 +5311,15 @@ document.getElementById('syncAllBtn').onclick = async () => {
   }
 };
 
-// ============= Mode Switcher (Settings) =============
-
-const MODE_HINTS = {
-  solo: '只用手機記錄。資料存在這台手機，建議每週備份一次。',
-  multi: '手機和電腦都會用。透過 Google 試算表讓兩邊看到相同資料。',
-  all: '進階使用者。顯示所有選項。'
-};
-
-async function setMode(mode) {
-  // Update active tab
-  document.querySelectorAll('.mode-tab').forEach(t => {
-    t.classList.toggle('active', t.dataset.mode === mode);
-  });
-
-  // Update hint text
-  document.getElementById('modeHint').textContent = MODE_HINTS[mode];
-
-  // Show/hide blocks
-  document.querySelectorAll('.setting-block').forEach(block => {
-    const modes = (block.dataset.modes || '').split(' ');
-    block.classList.toggle('hidden', !modes.includes(mode));
-  });
-
-  // Save preference
-  try {
-    await window.storage.set('settings_mode', mode);
-  } catch (e) {}
-}
+// ============= Settings (mode switcher removed; everything shown) =============
 
 async function loadSettingsMode() {
-  let mode = 'solo'; // default
+  // No-op: mode switcher removed, all blocks always visible
+  // 兼容性保留：清除舊的儲存值（若有的話）
   try {
-    const r = await window.storage.get('settings_mode');
-    if (r && r.value) mode = r.value;
+    await window.storage.delete('settings_mode');
   } catch (e) {}
-  setMode(mode);
 }
-
-document.querySelectorAll('.mode-tab').forEach(t => {
-  t.onclick = () => setMode(t.dataset.mode);
-});
 
 function showBackupStatus(type, message) {
   const el = document.getElementById('backupStatus');
