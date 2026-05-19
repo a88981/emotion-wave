@@ -176,25 +176,11 @@
     border-radius: 8px;
     padding: 32px 28px;
     box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.6) inset,
-      0 -1px 0 rgba(255, 255, 255, 0.2) inset,
       0 8px 32px rgba(232, 145, 122, 0.12),
       0 2px 8px rgba(232, 145, 122, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(184, 154, 150, 0.2);
     margin-bottom: 20px;
     position: relative;
-  }
-
-  .card::before {
-    content: '';
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    right: 8px;
-    bottom: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    pointer-events: none;
-    border-radius: 6px;
   }
 
   .section-label {
@@ -699,17 +685,21 @@
   textarea, input[type="text"] {
     width: 100%;
     padding: 14px 16px;
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(184, 154, 150, 0.25);
     border-radius: 6px;
     font-family: 'Noto Serif TC', serif;
     font-size: 0.95rem;
     color: var(--ink);
-    resize: vertical;
+    resize: none;
     line-height: 1.8;
     transition: all 0.3s ease;
+  }
+
+  textarea {
+    min-height: 60px;
   }
 
   textarea:focus, input[type="text"]:focus {
@@ -780,28 +770,7 @@
   }
 
   .thread-zone {
-    background: rgba(155, 138, 163, 0.06);
-    border: 1px dashed rgba(155, 138, 163, 0.3);
-    padding: 18px 20px;
-    border-radius: 2px;
-    margin: 24px 0;
-  }
-
-  .thread-zone-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    color: var(--mist);
-    font-size: 0.95rem;
-    margin-bottom: 4px;
-    letter-spacing: 0.1em;
-  }
-
-  .thread-zone-hint {
-    font-size: 0.82rem;
-    color: var(--ink-faint);
-    font-style: italic;
-    margin-bottom: 12px;
-    line-height: 1.6;
+    margin: 0;
   }
 
   .thread-select {
@@ -875,6 +844,73 @@
     font-size: 0.8rem;
     margin-left: 4px;
   }
+
+  .optional-mark {
+    color: var(--ink-faint);
+    font-size: 0.72rem;
+    font-family: 'Noto Serif TC', serif;
+    font-style: normal;
+    letter-spacing: 0;
+    text-transform: none;
+    margin-left: 4px;
+    font-weight: 400;
+  }
+
+  .thread-block {
+    background: rgba(155, 138, 163, 0.06);
+    border: 1px solid rgba(155, 138, 163, 0.3);
+    border-radius: 2px;
+    padding: 12px 14px;
+    margin-top: 14px;
+    transition: all 0.3s ease;
+  }
+
+  .thread-block:hover {
+    background: rgba(155, 138, 163, 0.1);
+  }
+
+  .thread-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .thread-toggle input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--mist);
+    cursor: pointer;
+    margin: 0;
+  }
+
+  .thread-toggle-icon {
+    color: var(--mist);
+    font-size: 1.1rem;
+  }
+
+  .thread-toggle-text {
+    font-family: 'Noto Serif TC', serif;
+    font-style: italic;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    flex: 1;
+    transition: color 0.2s;
+  }
+
+  .thread-toggle input:checked ~ .thread-toggle-text {
+    color: var(--mist);
+  }
+
+  #threadZone:not(.hidden) {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(155, 138, 163, 0.2);
+  }
+
+  .thread-zone.hidden { display: none; }
 
   .submit-btn {
     width: 100%;
@@ -2579,6 +2615,7 @@
         <span class="morning-check-text">這是今天醒來的第一個感受</span>
       </label>
 
+      <!-- 1. Intensity -->
       <div class="section-label">情緒強度 · intensity</div>
       <p class="question">這份感受有多強？<span class="required-mark">*</span></p>
 
@@ -2611,10 +2648,12 @@
         <span>這個強度，建議等波走完再做決定 ~</span>
       </div>
 
-      <div class="section-label">情緒色彩 · color<span class="required-mark">*</span></div>
+      <!-- 2. Mood color -->
+      <div class="section-label" style="margin-top: 24px;">情緒色彩 · color<span class="required-mark">*</span></div>
       <div class="mood-grid" id="moodGrid"></div>
 
-      <div class="section-label">身體訊息 · body</div>
+      <!-- 3. Body -->
+      <div class="section-label" style="margin-top: 24px;">身體訊息 · body <span class="optional-mark">(可選)</span></div>
       <p class="body-intro">身體先說話，心智後解讀。先別解讀，只覺察。點選區域查看感受選項。</p>
 
       <div class="body-regions-row" id="bodyRegionsRow">
@@ -2634,44 +2673,35 @@
 
       <div class="body-summary" id="bodySummary"></div>
 
-      <div class="section-label" style="margin-top: 24px;">事件 · event</div>
-      <p class="body-intro">發生了什麼事？看到、聽到、想到什麼，讓你有了這個情緒？可以寫一句話。</p>
-      <textarea id="event" rows="2" placeholder="例如：看到他回我訊息了 / 客戶又改稿 / 早上跟家人吵架"></textarea>
+      <!-- 4. Trigger (was: event) -->
+      <div class="section-label" style="margin-top: 24px;">觸發 · trigger <span class="optional-mark">(可選)</span></div>
+      <p class="body-intro">什麼引發了這個情緒？事件、身體狀況、莫名浮現的畫面——沒事件也沒關係，純粹的波本身就完整。</p>
+      <textarea id="event" rows="2" placeholder="例如：看到他回我訊息了 / 客戶又改稿 / 沒由來就是煩"></textarea>
 
-      <div class="section-label" style="margin-top: 24px;">感受 · feeling</div>
+      <!-- Thread zone: checkbox to expand, wrapped in a soft block to be noticed -->
+      <div class="thread-block">
+        <label class="thread-toggle" id="threadToggle">
+          <input type="checkbox" id="threadToggleCheck" />
+          <span class="thread-toggle-icon">⌒</span>
+          <span class="thread-toggle-text">綁定追蹤線</span>
+        </label>
+        <div class="thread-zone hidden" id="threadZone">
+          <select class="thread-select" id="threadSelect">
+            <option value="">選一條線</option>
+          </select>
+          <span class="new-thread-link" id="newThreadLink">+ 開一條新追蹤線</span>
+        </div>
+      </div>
+
+      <!-- 5. Feeling -->
+      <div class="section-label" style="margin-top: 24px;">感受 · feeling <span class="optional-mark">(可選)</span></div>
       <p class="body-intro">那個當下，你怎麼解讀這件事？它讓你有什麼感覺？</p>
       <textarea id="feeling" rows="3" placeholder="例如：他沒回讓我覺得不被重視 / 客戶反覆改稿讓我懷疑自己 / 家人說那句話讓我覺得不被理解"></textarea>
 
-      <div class="section-label" style="margin-top: 24px;">聯想 · association</div>
+      <!-- 6. Association -->
+      <div class="section-label" style="margin-top: 24px;">聯想 · association <span class="optional-mark">(可選)</span></div>
       <p class="body-intro">如果有東西自己浮上來——一個畫面、一段記憶、一個比喻——就標記它。這跟眼前的事可能無關，但就是浮上來了。</p>
       <input type="text" id="association" placeholder="例如：黑洞 / 小時候媽媽罵我那種 / 被丟下的感覺" />
-
-      <!-- Thread zone -->
-      <div class="thread-zone">
-        <div class="thread-zone-title">~ 這要綁定追蹤線嗎？</div>
-        <p class="thread-zone-hint">
-          如果這份感受跟某個正在發酵的議題有關，可以綁定一條追蹤線。<br>
-          綁定後，這筆紀錄會累積到那條線。
-        </p>
-        <select class="thread-select" id="threadSelect">
-          <option value="">不綁定（就是日常記錄）</option>
-        </select>
-        <span class="new-thread-link" id="newThreadLink">+ 開一條新追蹤線</span>
-      </div>
-
-      <!-- Deep section -->
-      <div id="deepSection" class="deep-section hidden">
-        <div class="deep-intro">
-          綁了追蹤線，這筆紀錄會跟這條線一起累積。<br>
-          <span class="zh">如果有想說的就寫，沒有也可以直接送出——情緒在當下就夠完整了。</span>
-        </div>
-
-        <div class="prompt-group">
-          <label class="prompt-label">想說的話 · <span class="prompt-label-zh">可選</span></label>
-          <p class="prompt-hint">不需要分析、不需要反思。就是想說什麼就說什麼。</p>
-          <textarea id="freeNote" rows="4" placeholder="just write…"></textarea>
-        </div>
-      </div>
 
       <button class="submit-btn" id="submitBtn">記下此刻</button>
     </div>
@@ -2904,7 +2934,7 @@
             <span class="cal-legend-item"><span class="cal-legend-dot" style="background: #AFA7A4;"></span>疏離</span>
             <span class="cal-legend-item"><span class="cal-legend-dot" style="background: #B6A4C9;"></span>懸浮</span>
           </div>
-          <div class="cal-legend-note">色相 = 情緒 · 深淺 = 強度 · 點數 = 那天記了幾筆<br>一天多筆，取最高強度那筆顯示</div>
+          <div class="cal-legend-note">色相 = 情緒 · 深淺 = 強度 · 點數 = 筆數（取最高強度顯示）</div>
         </div>
 
         <!-- Day detail (shown when a day is tapped) -->
@@ -3063,11 +3093,6 @@
     <div class="section-label" style="margin-top: 16px;">追蹤線 · thread</div>
     <select id="editThread" class="thread-select"></select>
 
-    <div id="editFreeNoteWrap" style="display:none;">
-      <div class="section-label" style="margin-top: 16px;">想說的話 · free note</div>
-      <textarea id="editFreeNote" rows="3"></textarea>
-    </div>
-
     <div class="modal-actions">
       <button class="submit-btn" id="editSaveBtn">儲存修改</button>
       <button class="submit-btn secondary" id="editCancelBtn">取消</button>
@@ -3095,7 +3120,6 @@
 
       <h4>追蹤線的用法</h4>
       <p>當某件事一直在心裡轉——可能是個決定、關係、選擇——為它開一條追蹤線。在記錄時綁定這條線，這筆紀錄就會累積到那條線。</p>
-      <p>綁定時下方會出現一個「想說的話」欄位，是純粹的書寫空間——<strong style="color:var(--terracotta);font-weight:400;">不需要分析、不需要回答任何問題</strong>，想說什麼寫什麼，不寫也沒關係。</p>
       <p>追蹤線的「清晰度評估」會告訴你波走到哪了：<br>
       · <span style="color:var(--mist);">尚在波中</span>——還沒走過完整高低<br>
       · <span style="color:var(--gold);">逐漸收斂</span>——走過高低但仍變動<br>
@@ -3126,7 +3150,7 @@
         <div class="guide-step-body">
           <p>打開 Google 試算表，建一個新的，名稱可以叫「情緒波」。</p>
           <p>在第一列（第 1 行）填入這些欄位名稱（從 A 欄到 L 欄）：</p>
-          <div class="code-block" id="headerRow">時間	日期	時段	波位	情緒	emoji	事件	感受	想說的話	身體訊息	其他身體	聯想	追蹤線<button class="code-copy-btn" onclick="copyCode('headerRow')">複製</button></div>
+          <div class="code-block" id="headerRow">時間	日期	時段	波位	情緒	emoji	事件	感受	身體訊息	其他身體	聯想	追蹤線<button class="code-copy-btn" onclick="copyCode('headerRow')">複製</button></div>
           <p>把整段複製、貼到 A1 儲存格——Google 會自動展開到 L1。</p>
         </div>
       </div>
@@ -3164,7 +3188,7 @@
       var entries = [];
       var lastRow = sheet.getLastRow();
       if (lastRow >= 2) {
-        var values = sheet.getRange(2, 1, lastRow - 1, 13).getValues();
+        var values = sheet.getRange(2, 1, lastRow - 1, 12).getValues();
         entries = values.map(function(row) {
           return {
             date: row[0] instanceof Date ? row[0].toISOString() : String(row[0] || ''),
@@ -3172,11 +3196,10 @@
             mood: String(row[4] || ''),
             event: String(row[6] || ''),
             feeling: String(row[7] || ''),
-            freeNote: String(row[8] || ''),
-            body: String(row[9] || ''),
-            bodyExtra: String(row[10] || ''),
-            association: String(row[11] || ''),
-            threadTitle: String(row[12] || '')
+            body: String(row[8] || ''),
+            bodyExtra: String(row[9] || ''),
+            association: String(row[10] || ''),
+            threadTitle: String(row[11] || '')
           };
         }).filter(function(e) { return e.date && e.mood; });
       }
@@ -3247,7 +3270,6 @@
           entry.emoji || '',
           entry.event || '',
           entry.feeling || '',
-          entry.freeNote || '',
           (entry.body || []).join('、'),
           entry.bodyExtra || '',
           entry.association || '',
@@ -3823,16 +3845,18 @@ function buildVoicePrompts() {
   });
 }
 
-document.getElementById('threadSelect').addEventListener('change', e => {
-  const deepSection = document.getElementById('deepSection');
-  if (e.target.value) {
-    deepSection.classList.remove('hidden');
+document.getElementById('newThreadLink').onclick = () => openNewThreadModal('fromRecord');
+
+// Thread toggle: checkbox to expand/collapse
+document.getElementById('threadToggleCheck').addEventListener('change', e => {
+  const zone = document.getElementById('threadZone');
+  if (e.target.checked) {
+    zone.classList.remove('hidden');
   } else {
-    deepSection.classList.add('hidden');
+    zone.classList.add('hidden');
+    document.getElementById('threadSelect').value = '';
   }
 });
-
-document.getElementById('newThreadLink').onclick = () => openNewThreadModal('fromRecord');
 
 document.querySelectorAll('.tab').forEach(t => {
   t.onclick = () => {
@@ -3883,7 +3907,6 @@ document.getElementById('submitBtn').onclick = async () => {
   if (!state.mood) { toast('先選一個情緒 ·'); return; }
 
   const threadId = document.getElementById('threadSelect').value || null;
-  const freeNote = document.getElementById('freeNote').value.trim();
   const isMorningCheck = document.getElementById('morningCheckbox');
   const isMorning = isMorningCheck && isMorningCheck.checked && !document.getElementById('morningCheck').classList.contains('hidden');
 
@@ -3904,9 +3927,8 @@ document.getElementById('submitBtn').onclick = async () => {
     association: document.getElementById('association').value.trim(),
     event: document.getElementById('event').value.trim(),
     feeling: document.getElementById('feeling').value.trim(),
-    freeNote: freeNote,
     // Legacy fields kept empty for backward compatibility
-    trigger: '', innerVoice: '', voice: '', insight: ''
+    freeNote: '', trigger: '', innerVoice: '', voice: '', insight: ''
   };
   state.entries.unshift(entry);
   await saveAll();
@@ -3933,18 +3955,22 @@ function resetForm() {
   document.getElementById('bodySummary').classList.remove('show');
   const ir = document.getElementById('intensityReminder');
   if (ir) ir.classList.add('hidden');
-  ['association', 'event', 'feeling', 'freeNote'].forEach(id => {
+  ['association', 'event', 'feeling'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
   document.getElementById('threadSelect').value = '';
-  document.getElementById('deepSection').classList.add('hidden');
+  // 重設追蹤線勾選 + 收起
+  const tc = document.getElementById('threadToggleCheck');
+  if (tc) tc.checked = false;
+  const tz = document.getElementById('threadZone');
+  if (tz) tz.classList.add('hidden');
 }
 
 function refreshThreadSelector() {
   const sel = document.getElementById('threadSelect');
   const cur = sel.value;
-  sel.innerHTML = '<option value="">不綁定（就是日常記錄）</option>';
+  sel.innerHTML = '<option value="">選一條線</option>';
   state.threads.filter(t => !t.resolved).forEach(t => {
     const opt = document.createElement('option');
     opt.value = t.id;
@@ -3984,8 +4010,13 @@ document.getElementById('threadModalSave').onclick = async () => {
 
   if (threadModalContext === 'fromRecord') {
     document.getElementById('threadSelect').value = thread.id;
-    document.getElementById('deepSection').classList.remove('hidden');
-    toast('追蹤線已開啟，下方繼續書寫 ·');
+    // 自動勾選並展開
+    const tc = document.getElementById('threadToggleCheck');
+    if (tc) {
+      tc.checked = true;
+      document.getElementById('threadZone').classList.remove('hidden');
+    }
+    toast('追蹤線已開啟，這筆會綁進去 ·');
   } else {
     renderThreadsList();
     toast('新追蹤線已開啟 ·');
@@ -4214,7 +4245,6 @@ function renderEntryCard(e, inThread) {
   if (e.innerVoice) html += `<div class="entry-text"><em>內在反詢 ·</em>${e.innerVoice}</div>`;
   if (e.voice) html += `<div class="entry-text"><em>情緒之聲 ·</em>${e.voice}</div>`;
   if (e.insight) html += `<div class="entry-text"><em>洞察 ·</em>${e.insight}</div>`;
-  if (e.freeNote) html += `<div class="entry-text"><em>想說的話 ·</em>${e.freeNote}</div>`;
   html += `<div class="entry-actions">
     <button class="entry-action-btn" onclick="openEditModal(${e.id})">edit</button>
     <button class="entry-action-btn entry-action-delete" onclick="deleteEntry(${e.id})">delete</button>
@@ -4284,14 +4314,6 @@ window.openEditModal = function(id) {
     threadSel.appendChild(opt);
   });
 
-  // 想說的話只在綁定追蹤線時才顯示
-  const fnWrap = document.getElementById('editFreeNoteWrap');
-  fnWrap.style.display = entry.threadId ? 'block' : 'none';
-  document.getElementById('editFreeNote').value = entry.freeNote || '';
-  threadSel.onchange = () => {
-    fnWrap.style.display = threadSel.value ? 'block' : 'none';
-  };
-
   document.getElementById('editModal').classList.add('show');
 };
 
@@ -4321,7 +4343,6 @@ document.getElementById('editSaveBtn').onclick = async () => {
   const newAssociation = document.getElementById('editAssociation').value.trim();
   const newBodyRaw = document.getElementById('editBody').value.trim();
   const newThreadId = document.getElementById('editThread').value || null;
-  const newFreeNote = newThreadId ? document.getElementById('editFreeNote').value.trim() : '';
 
   // 身體：用「、」「,」「，」分隔
   const bodyTokens = newBodyRaw
@@ -4336,7 +4357,6 @@ document.getElementById('editSaveBtn').onclick = async () => {
   entry.body = bodyTokens;
   entry.bodyExtra = '';  // 統一進 body
   entry.threadId = newThreadId;
-  entry.freeNote = newFreeNote;
   // 強度或情緒改了的話，波位重新推算
   entry.wave = inferWaveFromIntensity(newMood, newIntensity);
   entry.mode = entry.isMorning ? 'morning' : (newThreadId ? 'deep' : 'quick');
@@ -4939,7 +4959,6 @@ function buildAnalysisPackage() {
     text += `\n`;
     if (e.event) text += `  事件：${e.event}\n`;
     if (e.feeling) text += `  感受：${e.feeling}\n`;
-    if (e.freeNote) text += `  想說的話：${e.freeNote}\n`;
     if (e.trigger) text += `  觸發：${e.trigger}\n`;
     if (e.innerVoice) text += `  內在反詢：${e.innerVoice}\n`;
     if (e.voice) text += `  情緒之聲：${e.voice}\n`;
@@ -5132,7 +5151,6 @@ function entryToSyncPayload(entry) {
     emoji: getMoodEmoji(entry.mood),
     event: entry.event || '',
     feeling: entry.feeling || '',
-    freeNote: entry.freeNote || '',
     body: entry.body || [],
     bodyExtra: entry.bodyExtra || '',
     association: entry.association || '',
@@ -5544,7 +5562,7 @@ document.getElementById('pullBtn').onclick = async () => {
         association: s.association || '',
         event: s.event || '',
         feeling: s.feeling || '',
-        freeNote: s.freeNote || '',
+        freeNote: '',
         trigger: '', innerVoice: '', voice: '', insight: ''
       };
       state.entries.push(entry);
