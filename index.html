@@ -1861,7 +1861,7 @@
         <div class="thread-zone-title">~ 這要綁定追蹤線嗎？</div>
         <p class="thread-zone-hint">
           如果這份感受跟某個正在發酵的議題有關，可以綁定一條追蹤線。<br>
-          選了之後會出現深度書寫的欄位——<strong style="color:var(--terracotta);font-weight:400;">至少要寫一個</strong>。
+          綁定後，這筆紀錄會累積到那條線。
         </p>
         <select class="thread-select" id="threadSelect">
           <option value="">不綁定（就是日常記錄）</option>
@@ -1872,33 +1872,14 @@
       <!-- Deep section -->
       <div id="deepSection" class="deep-section hidden">
         <div class="deep-intro">
-          You've chosen to work with a thread. At least one of the fields below.<br>
-          <span class="zh">綁了追蹤線——下面四個欄位至少填一個，讓波在文字裡走過。</span>
+          綁了追蹤線，這筆紀錄會跟這條線一起累積。<br>
+          <span class="zh">如果有想說的就寫，沒有也可以直接送出——情緒在當下就夠完整了。</span>
         </div>
 
         <div class="prompt-group">
-          <label class="prompt-label">觸發 · <span class="prompt-label-zh">是什麼讓這份感受浮現</span></label>
-          <p class="prompt-hint">什麼事、誰、什麼話語、什麼念頭？</p>
-          <textarea id="trigger" rows="3" placeholder="this began when…"></textarea>
-        </div>
-
-        <div class="prompt-group">
-          <label class="prompt-label">內在反詢 · <span class="prompt-label-zh">看見自己的心智在做什麼</span></label>
-          <p class="prompt-hint">這些問題不需要找答案。點選一個來開始。</p>
-          <div class="voice-prompts" id="voicePrompts"></div>
-          <textarea id="innerVoice" rows="4" placeholder="what I notice my mind doing…"></textarea>
-        </div>
-
-        <div class="prompt-group">
-          <label class="prompt-label">情緒想說什麼 · <span class="prompt-label-zh">讓情緒自己發聲</span></label>
-          <p class="prompt-hint">如果這份感受會說話，它想表達什麼？</p>
-          <textarea id="voice" rows="4" placeholder="if this feeling could speak…"></textarea>
-        </div>
-
-        <div class="prompt-group">
-          <label class="prompt-label">此刻的洞察 · <span class="prompt-label-zh">寫完之後</span></label>
-          <p class="prompt-hint">不是答案，只是「我現在注意到」。</p>
-          <textarea id="insight" rows="3" placeholder="what I notice now…"></textarea>
+          <label class="prompt-label">想說的話 · <span class="prompt-label-zh">可選</span></label>
+          <p class="prompt-hint">不需要分析、不需要反思。就是想說什麼就說什麼。</p>
+          <textarea id="freeNote" rows="4" placeholder="just write…"></textarea>
         </div>
       </div>
 
@@ -2154,6 +2135,7 @@
     <div class="help-content">
       <h4>核心原則</h4>
       <p>這是為情緒覺察設計的工具。核心紀律是：<strong style="color:var(--terracotta);font-weight:400;">不在情緒裡做決定，等波完整走完。</strong></p>
+      <p><strong style="color:var(--terracotta);font-weight:400;">情緒湧上來時，不需要思考、不需要分析。</strong>就是按一按、選一選，把當下標記下來，然後可以放下了。事後想反思再回來看。</p>
 
       <h4>什麼時候記錄</h4>
       <p>突然有情緒就記。不分早晚、不分大小事——只要身體有訊號、心裡有波動，就打開記錄。</p>
@@ -2166,7 +2148,8 @@
       <p>累積一週後，到「回顧」可以看到模式：哪些主題反覆出現？它們各自伴隨什麼波位？身體先說、心智後聯想，模式自己浮現——這比直接分析可靠太多。</p>
 
       <h4>追蹤線的用法</h4>
-      <p>當某件事一直在心裡轉——可能是個決定、關係、選擇——為它開一條追蹤線。在記錄時綁定這條線，下方會自動展開深度書寫的欄位（至少寫一個）。</p>
+      <p>當某件事一直在心裡轉——可能是個決定、關係、選擇——為它開一條追蹤線。在記錄時綁定這條線，這筆紀錄就會累積到那條線。</p>
+      <p>綁定時下方會出現一個「想說的話」欄位，是純粹的書寫空間——<strong style="color:var(--terracotta);font-weight:400;">不需要分析、不需要回答任何問題</strong>，想說什麼寫什麼，不寫也沒關係。</p>
       <p>追蹤線的「清晰度評估」會告訴你波走到哪了：<br>
       · <span style="color:var(--mist);">尚在波中</span>——還沒走過完整高低<br>
       · <span style="color:var(--gold);">逐漸收斂</span>——走過高低但仍變動<br>
@@ -2196,9 +2179,9 @@
         <span class="guide-step-title">建立試算表</span>
         <div class="guide-step-body">
           <p>打開 Google 試算表，建一個新的，名稱可以叫「情緒波」。</p>
-          <p>在第一列（第 1 行）填入這些欄位名稱（從 A 欄到 O 欄）：</p>
-          <div class="code-block" id="headerRow">時間	日期	時段	波位	情緒	emoji	事件	身體訊息	其他身體	聯想	追蹤線	觸發	內在反詢	情緒之聲	洞察<button class="code-copy-btn" onclick="copyCode('headerRow')">複製</button></div>
-          <p>把整段複製、貼到 A1 儲存格——Google 會自動展開到 O1。</p>
+          <p>在第一列（第 1 行）填入這些欄位名稱（從 A 欄到 L 欄）：</p>
+          <div class="code-block" id="headerRow">時間	日期	時段	波位	情緒	emoji	事件	想說的話	身體訊息	其他身體	聯想	追蹤線<button class="code-copy-btn" onclick="copyCode('headerRow')">複製</button></div>
+          <p>把整段複製、貼到 A1 儲存格——Google 會自動展開到 L1。</p>
         </div>
       </div>
 
@@ -2236,14 +2219,11 @@
           entry.mood || '',
           entry.emoji || '',
           entry.event || '',
+          entry.freeNote || '',
           (entry.body || []).join('、'),
           entry.bodyExtra || '',
           entry.association || '',
-          entry.threadTitle || '',
-          entry.trigger || '',
-          entry.innerVoice || '',
-          entry.voice || '',
-          entry.insight || ''
+          entry.threadTitle || ''
         ]);
       });
 
@@ -2581,6 +2561,7 @@ function updateBodyUI() {
 
 function buildVoicePrompts() {
   const c = document.getElementById('voicePrompts');
+  if (!c) return; // Element removed - no-op
   c.innerHTML = '';
   VOICE_PROMPTS.forEach(p => {
     const btn = document.createElement('button');
@@ -2588,6 +2569,7 @@ function buildVoicePrompts() {
     btn.textContent = p;
     btn.onclick = () => {
       const ta = document.getElementById('innerVoice');
+      if (!ta) return;
       const cur = ta.value;
       ta.value = cur + (cur && !cur.endsWith('\n') ? '\n' : '') + p + ' ';
       ta.focus();
@@ -2650,15 +2632,7 @@ document.getElementById('submitBtn').onclick = async () => {
   if (!state.mood) { toast('先選一個情緒 ·'); return; }
 
   const threadId = document.getElementById('threadSelect').value || null;
-  const trigger = document.getElementById('trigger').value.trim();
-  const innerVoice = document.getElementById('innerVoice').value.trim();
-  const voice = document.getElementById('voice').value.trim();
-  const insight = document.getElementById('insight').value.trim();
-
-  if (threadId && !trigger && !innerVoice && !voice && !insight) {
-    toast('綁定追蹤線需要至少寫一個深度欄位 ·');
-    return;
-  }
+  const freeNote = document.getElementById('freeNote').value.trim();
 
   const entry = {
     id: Date.now(),
@@ -2671,11 +2645,13 @@ document.getElementById('submitBtn').onclick = async () => {
     bodyExtra: document.getElementById('bodyExtra').value.trim(),
     association: document.getElementById('association').value.trim(),
     event: document.getElementById('event').value.trim(),
-    trigger, innerVoice, voice, insight
+    freeNote: freeNote,
+    // Legacy fields kept empty for backward compatibility
+    trigger: '', innerVoice: '', voice: '', insight: ''
   };
   state.entries.unshift(entry);
   await saveAll();
-  toast(threadId ? '書寫完成 ·' : '記下了 ·');
+  toast('記下了 ·');
   resetForm();
 
   // Auto sync to Google Sheets if enabled
@@ -2694,7 +2670,7 @@ function resetForm() {
   document.querySelectorAll('.region-panel').forEach(x => x.classList.remove('open'));
   document.getElementById('bodySummary').classList.remove('show');
   document.getElementById('waveReminder').classList.add('hidden');
-  ['bodyExtra', 'association', 'event', 'trigger', 'innerVoice', 'voice', 'insight'].forEach(id => {
+  ['bodyExtra', 'association', 'event', 'freeNote'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
@@ -2966,6 +2942,7 @@ function renderEntryCard(e, inThread) {
   if (e.innerVoice) html += `<div class="entry-text"><em>內在反詢 ·</em>${e.innerVoice}</div>`;
   if (e.voice) html += `<div class="entry-text"><em>情緒之聲 ·</em>${e.voice}</div>`;
   if (e.insight) html += `<div class="entry-text"><em>洞察 ·</em>${e.insight}</div>`;
+  if (e.freeNote) html += `<div class="entry-text"><em>想說的話 ·</em>${e.freeNote}</div>`;
   html += `</div>`;
   return html;
 }
@@ -3436,6 +3413,7 @@ function buildAnalysisPackage() {
     if (e.bodyExtra) text += `、${e.bodyExtra}`;
     text += `\n`;
     if (e.event) text += `  事件：${e.event}\n`;
+    if (e.freeNote) text += `  想說的話：${e.freeNote}\n`;
     if (e.trigger) text += `  觸發：${e.trigger}\n`;
     if (e.innerVoice) text += `  內在反詢：${e.innerVoice}\n`;
     if (e.voice) text += `  情緒之聲：${e.voice}\n`;
@@ -3626,14 +3604,11 @@ function entryToSyncPayload(entry) {
     mood: entry.mood,
     emoji: getMoodEmoji(entry.mood),
     event: entry.event || '',
+    freeNote: entry.freeNote || '',
     body: entry.body || [],
     bodyExtra: entry.bodyExtra || '',
     association: entry.association || '',
-    threadTitle: thread ? thread.title : '',
-    trigger: entry.trigger || '',
-    innerVoice: entry.innerVoice || '',
-    voice: entry.voice || '',
-    insight: entry.insight || ''
+    threadTitle: thread ? thread.title : ''
   };
 }
 
