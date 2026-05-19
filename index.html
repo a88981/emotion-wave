@@ -1761,6 +1761,224 @@
     color: var(--coral-deep);
   }
 
+  /* Backup reminder banner */
+  .backup-reminder {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    background: linear-gradient(135deg,
+      rgba(122, 138, 107, 0.12) 0%,
+      rgba(255, 255, 255, 0.5) 100%);
+    border: 1px solid rgba(122, 138, 107, 0.2);
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+
+  .backup-reminder-icon {
+    font-size: 1.05rem;
+    flex-shrink: 0;
+  }
+
+  .backup-reminder-text {
+    flex: 1;
+    line-height: 1.5;
+    font-family: 'Noto Serif TC', serif;
+  }
+
+  .backup-reminder-text a {
+    color: var(--coral-deep);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .backup-reminder-close {
+    background: transparent;
+    border: none;
+    color: var(--ink-faint);
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 0 4px;
+    line-height: 1;
+  }
+
+  .backup-reminder-close:hover {
+    color: var(--ink);
+  }
+
+  /* Hierarchical (year/month) history view */
+  .hier-year {
+    margin-bottom: 18px;
+  }
+
+  .hier-year-header {
+    width: 100%;
+    background: linear-gradient(135deg,
+      rgba(232, 145, 122, 0.18) 0%,
+      rgba(255, 255, 255, 0.4) 100%);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(232, 145, 122, 0.2);
+    border-radius: 8px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .hier-year-header:hover {
+    background: linear-gradient(135deg,
+      rgba(232, 145, 122, 0.25) 0%,
+      rgba(255, 255, 255, 0.55) 100%);
+    transform: translateY(-1px);
+  }
+
+  .hier-year-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    color: var(--coral-deep);
+    letter-spacing: 0.05em;
+    flex: 1;
+    text-align: left;
+  }
+
+  .hier-month {
+    margin-left: 16px;
+    margin-bottom: 8px;
+  }
+
+  .hier-month-header {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .hier-month-header:hover {
+    background: rgba(255, 255, 255, 0.75);
+  }
+
+  .hier-month-label {
+    font-family: 'Noto Serif TC', serif;
+    color: var(--ink);
+    font-size: 0.95rem;
+    flex: 1;
+    text-align: left;
+  }
+
+  .hier-arrow {
+    color: var(--coral);
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+    width: 12px;
+    flex-shrink: 0;
+  }
+
+  .hier-year.expanded > .hier-year-header .hier-arrow,
+  .hier-month.expanded > .hier-month-header .hier-arrow {
+    transform: rotate(90deg);
+  }
+
+  .hier-count {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 0.82rem;
+  }
+
+  .hier-year-body,
+  .hier-month-body {
+    display: none;
+    padding-top: 6px;
+  }
+
+  .hier-year.expanded > .hier-year-body,
+  .hier-month.expanded > .hier-month-body {
+    display: block;
+  }
+
+  .hier-month-body {
+    margin-left: 8px;
+  }
+
+  /* Mode switcher in settings */
+  .mode-switcher {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 8px;
+    padding: 4px;
+  }
+
+  .mode-tab {
+    padding: 12px 4px 10px;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Noto Serif TC', serif;
+    color: var(--ink-soft);
+  }
+
+  .mode-tab:hover {
+    background: rgba(255, 255, 255, 0.6);
+  }
+
+  .mode-tab.active {
+    background: linear-gradient(135deg, var(--coral) 0%, var(--coral-deep) 100%);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(232, 145, 122, 0.25);
+  }
+
+  .mode-icon {
+    font-size: 1.3rem;
+    line-height: 1;
+  }
+
+  .mode-label {
+    font-size: 0.82rem;
+    letter-spacing: 0.05em;
+  }
+
+  .mode-hint {
+    margin-top: 12px;
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  .setting-block.hidden {
+    display: none;
+  }
+
   .help-btn {
     position: absolute;
     top: 24px;
@@ -1847,6 +2065,15 @@
 
   <!-- RECORD (unified) -->
   <div id="tab-record" class="tab-content">
+
+    <!-- Backup reminder (only shows if 7+ days without backup AND no sheet sync) -->
+    <div id="backupReminder" class="backup-reminder hidden">
+      <span class="backup-reminder-icon">🌱</span>
+      <span class="backup-reminder-text">
+        記了一陣子了，<a href="#" id="backupReminderLink">備份一下</a>避免意外消失
+      </span>
+      <button class="backup-reminder-close" onclick="dismissBackupReminder()">×</button>
+    </div>
 
     <div class="card">
 
@@ -2113,49 +2340,93 @@
   <!-- SETTINGS -->
   <div id="tab-settings" class="tab-content hidden">
     <div class="card">
-      <div class="section-label">Google 試算表同步</div>
-      <p style="color: var(--ink-soft); font-size: 0.9rem; line-height: 1.7; margin-bottom: 16px;">
-        把每筆紀錄自動寫入你的 Google 試算表。第一次設定大約 15 分鐘，之後就會在後台自動運作。
+      <p style="color: var(--ink-soft); font-size: 0.85rem; line-height: 1.7; margin-bottom: 14px; font-style: italic;">
+        告訴情緒波你打算怎麼用，畫面會顯示對應的選項。
       </p>
 
-      <div class="prompt-group">
-        <label class="prompt-label">Web App 網址</label>
-        <p class="prompt-hint">從 Google Apps Script 部署後取得的網址，貼到這裡</p>
-        <input type="text" id="syncUrl" placeholder="https://script.google.com/macros/s/..." />
+      <div class="mode-switcher">
+        <button class="mode-tab active" data-mode="solo">
+          <span class="mode-icon">📱</span>
+          <span class="mode-label">純手機</span>
+        </button>
+        <button class="mode-tab" data-mode="multi">
+          <span class="mode-icon">💻</span>
+          <span class="mode-label">雙機</span>
+        </button>
+        <button class="mode-tab" data-mode="all">
+          <span class="mode-icon">⚙</span>
+          <span class="mode-label">全部</span>
+        </button>
+      </div>
+      <p class="mode-hint" id="modeHint">只用手機記錄。資料存在這台手機，建議每週備份一次。</p>
+    </div>
+
+    <div class="card">
+      <!-- 雙機 / 全部 mode: Google 試算表 -->
+      <div class="setting-block" data-modes="multi all">
+        <div class="section-label">Google 試算表同步</div>
+        <p style="color: var(--ink-soft); font-size: 0.9rem; line-height: 1.7; margin-bottom: 16px;">
+          把每筆紀錄自動寫入你的 Google 試算表。第一次設定大約 15 分鐘，之後就會在後台自動運作。
+        </p>
+
+        <div class="prompt-group">
+          <label class="prompt-label">Web App 網址</label>
+          <p class="prompt-hint">從 Google Apps Script 部署後取得的網址，貼到這裡</p>
+          <input type="text" id="syncUrl" placeholder="https://script.google.com/macros/s/..." />
+        </div>
+
+        <div class="prompt-group">
+          <label class="prompt-label">同步設定</label>
+          <label class="toggle-row">
+            <span>新紀錄自動同步</span>
+            <input type="checkbox" id="syncAutoEnabled" />
+            <span class="toggle-slider"></span>
+          </label>
+          <p class="prompt-hint" style="margin-top: 6px;">開啟後，每次按「記下此刻」都會自動寫入試算表（需要網路）</p>
+        </div>
+
+        <button class="submit-btn secondary" id="syncTestBtn" style="margin-top: 4px;">測試連線</button>
+        <button class="submit-btn" id="syncSaveBtn" style="margin-top: 8px;">儲存設定</button>
+
+        <div id="syncStatus" class="sync-status hidden"></div>
+
+        <div class="section-label" style="margin-top: 32px;">手動同步歷史資料</div>
+        <p style="color: var(--ink-soft); font-size: 0.88rem; line-height: 1.7; margin-bottom: 14px;">
+          把 app 裡已經有的紀錄一次補到試算表。例如：你之前先用 app 記了一陣子，現在才設定同步。
+        </p>
+        <button class="submit-btn secondary" id="syncAllBtn">同步全部歷史紀錄到試算表</button>
+
+        <div class="section-label" style="margin-top: 32px;">從試算表拉資料</div>
+        <p style="color: var(--ink-soft); font-size: 0.88rem; line-height: 1.7; margin-bottom: 14px;">
+          把試算表上有但這台裝置沒有的紀錄拉回來。<br>
+          例如：你在電腦記了東西，想讓手機 app 也看得到。
+        </p>
+        <button class="submit-btn secondary" id="pullBtn">從試算表補回紀錄</button>
+
+        <div id="pullStatus" class="sync-status hidden"></div>
+
+        <div class="section-label" style="margin-top: 32px;">設定說明</div>
+        <button class="submit-btn secondary" id="setupGuideBtn">查看手把手教學</button>
       </div>
 
-      <div class="prompt-group">
-        <label class="prompt-label">同步設定</label>
-        <label class="toggle-row">
-          <span>新紀錄自動同步</span>
-          <input type="checkbox" id="syncAutoEnabled" />
-          <span class="toggle-slider"></span>
-        </label>
-        <p class="prompt-hint" style="margin-top: 6px;">開啟後，每次按「記下此刻」都會自動寫入試算表（需要網路）</p>
+      <!-- 純手機 / 全部 mode: 本機備份 -->
+      <div class="setting-block" data-modes="solo all">
+        <div class="section-label">本機備份 · backup</div>
+        <p style="color: var(--ink-soft); font-size: 0.88rem; line-height: 1.7; margin-bottom: 14px;">
+          把資料匯出成檔案，存到 iCloud、Google Drive 或寄給自己。<br>
+          <strong style="color: var(--coral-deep); font-weight: 400;">如果沒有設定試算表同步，建議每週匯出一次。</strong>
+        </p>
+        <button class="submit-btn secondary" id="exportDataBtn" style="margin-bottom: 8px;">📦 匯出全部資料</button>
+        <button class="submit-btn secondary" id="importDataBtn">📥 從檔案匯入</button>
+        <input type="file" id="importFileInput" accept=".json" style="display: none;" />
+
+        <div id="backupStatus" class="sync-status hidden"></div>
+
+        <p style="color: var(--ink-faint); font-size: 0.78rem; font-style: italic; margin-top: 14px; line-height: 1.6;">
+          匯入時：app 已有的紀錄不會被覆蓋，只會補進沒有的部分。<br>
+          換手機時：先在舊手機匯出 → 傳到新手機 → 在新手機匯入。
+        </p>
       </div>
-
-      <button class="submit-btn secondary" id="syncTestBtn" style="margin-top: 4px;">測試連線</button>
-      <button class="submit-btn" id="syncSaveBtn" style="margin-top: 8px;">儲存設定</button>
-
-      <div id="syncStatus" class="sync-status hidden"></div>
-
-      <div class="section-label" style="margin-top: 32px;">手動同步歷史資料</div>
-      <p style="color: var(--ink-soft); font-size: 0.88rem; line-height: 1.7; margin-bottom: 14px;">
-        把 app 裡已經有的紀錄一次補到試算表。例如：你之前先用 app 記了一陣子，現在才設定同步。
-      </p>
-      <button class="submit-btn secondary" id="syncAllBtn">同步全部歷史紀錄到試算表</button>
-
-      <div class="section-label" style="margin-top: 32px;">從試算表拉資料</div>
-      <p style="color: var(--ink-soft); font-size: 0.88rem; line-height: 1.7; margin-bottom: 14px;">
-        把試算表上有但這台裝置沒有的紀錄拉回來。<br>
-        例如：你在電腦記了東西，想讓手機 app 也看得到。
-      </p>
-      <button class="submit-btn secondary" id="pullBtn">從試算表補回紀錄</button>
-
-      <div id="pullStatus" class="sync-status hidden"></div>
-
-      <div class="section-label" style="margin-top: 32px;">設定說明</div>
-      <button class="submit-btn secondary" id="setupGuideBtn">查看手把手教學</button>
     </div>
   </div>
 
@@ -2247,7 +2518,18 @@
           <div class="code-block" id="appsScriptCode">function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getActiveSheet();
+
+    // Helper: get or create threads sheet
+    function getThreadsSheet() {
+      var t = ss.getSheetByName('追蹤線');
+      if (!t) {
+        t = ss.insertSheet('追蹤線');
+        t.appendRow(['id', '標題', '脈絡描述', '建立時間', '完結時間', '狀態']);
+      }
+      return t;
+    }
 
     if (data.action === 'test') {
       return ContentService.createTextOutput(JSON.stringify({
@@ -2256,28 +2538,71 @@
     }
 
     if (data.action === 'read') {
+      // Read entries
+      var entries = [];
       var lastRow = sheet.getLastRow();
-      if (lastRow < 2) {
-        return ContentService.createTextOutput(JSON.stringify({
-          status: 'ok', entries: []
-        })).setMimeType(ContentService.MimeType.JSON);
+      if (lastRow >= 2) {
+        var values = sheet.getRange(2, 1, lastRow - 1, 12).getValues();
+        entries = values.map(function(row) {
+          return {
+            date: row[0] instanceof Date ? row[0].toISOString() : String(row[0] || ''),
+            waveLabel: String(row[3] || ''),
+            mood: String(row[4] || ''),
+            event: String(row[6] || ''),
+            freeNote: String(row[7] || ''),
+            body: String(row[8] || ''),
+            bodyExtra: String(row[9] || ''),
+            association: String(row[10] || ''),
+            threadTitle: String(row[11] || '')
+          };
+        }).filter(function(e) { return e.date && e.mood; });
       }
-      var values = sheet.getRange(2, 1, lastRow - 1, 12).getValues();
-      var entries = values.map(function(row) {
-        return {
-          date: row[0] instanceof Date ? row[0].toISOString() : String(row[0] || ''),
-          waveLabel: String(row[3] || ''),
-          mood: String(row[4] || ''),
-          event: String(row[6] || ''),
-          freeNote: String(row[7] || ''),
-          body: String(row[8] || ''),
-          bodyExtra: String(row[9] || ''),
-          association: String(row[10] || ''),
-          threadTitle: String(row[11] || '')
-        };
-      }).filter(function(e) { return e.date && e.mood; });
+
+      // Read threads
+      var threads = [];
+      var ts = ss.getSheetByName('追蹤線');
+      if (ts) {
+        var tLast = ts.getLastRow();
+        if (tLast >= 2) {
+          var tValues = ts.getRange(2, 1, tLast - 1, 6).getValues();
+          threads = tValues.map(function(row) {
+            return {
+              id: String(row[0] || ''),
+              title: String(row[1] || ''),
+              desc: String(row[2] || ''),
+              createdAt: row[3] instanceof Date ? row[3].toISOString() : String(row[3] || ''),
+              resolvedAt: row[4] instanceof Date ? row[4].toISOString() : String(row[4] || ''),
+              resolved: String(row[5] || '') === '已完結'
+            };
+          }).filter(function(t) { return t.id && t.title; });
+        }
+      }
+
       return ContentService.createTextOutput(JSON.stringify({
-        status: 'ok', entries: entries
+        status: 'ok', entries: entries, threads: threads
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    if (data.action === 'sync_threads') {
+      // Replace all threads on the threads sheet
+      var ts = getThreadsSheet();
+      var lastRow = ts.getLastRow();
+      if (lastRow >= 2) {
+        ts.getRange(2, 1, lastRow - 1, 6).clearContent();
+      }
+      var threads = data.threads || [];
+      threads.forEach(function(t) {
+        ts.appendRow([
+          t.id || '',
+          t.title || '',
+          t.desc || '',
+          t.createdAt || '',
+          t.resolvedAt || '',
+          t.resolved ? '已完結' : '進行中'
+        ]);
+      });
+      return ContentService.createTextOutput(JSON.stringify({
+        status: 'ok', count: threads.length
       })).setMimeType(ContentService.MimeType.JSON);
     }
 
@@ -2840,6 +3165,7 @@ document.getElementById('threadModalSave').onclick = async () => {
   };
   state.threads.unshift(thread);
   await saveAll();
+  syncThreads();
   threadModal.classList.remove('show');
   refreshThreadSelector();
 
@@ -2947,7 +3273,10 @@ window.openThread = function(id) {
   rb.textContent = thread.resolved ? '↺ 重新開啟' : '✓ 標記為清晰已浮現';
   rb.onclick = async () => {
     thread.resolved = !thread.resolved;
+    if (thread.resolved) thread.resolvedAt = new Date().toISOString();
+    else thread.resolvedAt = '';
     await saveAll();
+    syncThreads();
     openThread(id);
     refreshThreadSelector();
   };
@@ -2976,6 +3305,7 @@ window.deleteThread = async function(id) {
   state.threads = state.threads.filter(t => t.id !== id);
   state.entries.forEach(e => { if (e.threadId === id) e.threadId = null; });
   await saveAll();
+  syncThreads();
   renderThreadsList();
   refreshThreadSelector();
 };
@@ -3392,10 +3722,82 @@ function renderHistory() {
 
   // Entries list
   const list = document.getElementById('historyList');
-  list.innerHTML = entries.map(e => renderEntryCard(e, false)).join('');
+  if (currentPeriod === 'all') {
+    list.innerHTML = renderHierarchicalEntries(entries);
+    bindHierarchicalToggles();
+  } else {
+    list.innerHTML = entries.map(e => renderEntryCard(e, false)).join('');
+  }
 
   // Render saved insight if exists
   renderSavedInsight();
+}
+
+function renderHierarchicalEntries(entries) {
+  if (entries.length === 0) return '';
+
+  // Group by year/month
+  const tree = {}; // tree[year][month] = entries[]
+  entries.forEach(e => {
+    const d = new Date(e.date);
+    const year = d.getFullYear();
+    const month = d.getMonth() + 1;
+    if (!tree[year]) tree[year] = {};
+    if (!tree[year][month]) tree[year][month] = [];
+    tree[year][month].push(e);
+  });
+
+  // Sort years descending, months descending within each year
+  const years = Object.keys(tree).map(Number).sort((a, b) => b - a);
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth() + 1;
+
+  return years.map(year => {
+    const months = Object.keys(tree[year]).map(Number).sort((a, b) => b - a);
+    const yearTotal = months.reduce((s, m) => s + tree[year][m].length, 0);
+    const isCurrentYear = year === currentYear;
+
+    const monthsHtml = months.map(month => {
+      const mEntries = tree[year][month];
+      const isCurrentMonth = isCurrentYear && month === currentMonth;
+      const entriesHtml = mEntries.map(e => renderEntryCard(e, false)).join('');
+
+      return `
+        <div class="hier-month ${isCurrentMonth ? 'expanded' : ''}" data-key="${year}-${month}">
+          <button class="hier-month-header" data-toggle="month" data-key="${year}-${month}">
+            <span class="hier-arrow">▸</span>
+            <span class="hier-month-label">${month} 月</span>
+            <span class="hier-count">${mEntries.length} 筆</span>
+          </button>
+          <div class="hier-month-body">
+            ${entriesHtml}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div class="hier-year ${isCurrentYear ? 'expanded' : ''}" data-key="${year}">
+        <button class="hier-year-header" data-toggle="year" data-key="${year}">
+          <span class="hier-arrow">▸</span>
+          <span class="hier-year-label">${year}</span>
+          <span class="hier-count">${yearTotal} 筆 · ${months.length} 個月</span>
+        </button>
+        <div class="hier-year-body">
+          ${monthsHtml}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function bindHierarchicalToggles() {
+  document.querySelectorAll('[data-toggle="year"], [data-toggle="month"]').forEach(btn => {
+    btn.onclick = () => {
+      const parent = btn.parentElement;
+      parent.classList.toggle('expanded');
+    };
+  });
 }
 
 // ============= AI Export & Insight =============
@@ -3756,6 +4158,27 @@ async function syncRequest(payload) {
   }
 }
 
+async function syncThreads() {
+  // Push entire thread list to sheet whenever it changes
+  if (!syncConfig.url || !syncConfig.autoEnabled) return;
+  try {
+    await syncRequest({
+      action: 'sync_threads',
+      threads: state.threads.map(t => ({
+        id: t.id,
+        title: t.title,
+        desc: t.desc || '',
+        createdAt: t.created || '',
+        resolvedAt: t.resolvedAt || '',
+        resolved: !!t.resolved
+      }))
+    });
+  } catch (e) {
+    console.error('Thread sync failed:', e);
+    // Silent fail
+  }
+}
+
 async function syncEntry(entry) {
   if (!syncConfig.url || !syncConfig.autoEnabled) return;
   try {
@@ -3798,12 +4221,14 @@ document.getElementById('syncSaveBtn').onclick = async () => {
 
 document.getElementById('syncAllBtn').onclick = async () => {
   if (!syncConfig.url) { showSyncStatus('error', '請先設定 Web App 網址'); return; }
-  if (state.entries.length === 0) { showSyncStatus('error', '沒有紀錄可同步'); return; }
-  if (!confirm(`即將同步 ${state.entries.length} 筆歷史紀錄。這會在試算表新增 ${state.entries.length} 行。\n\n確定嗎？`)) return;
+  if (state.entries.length === 0 && state.threads.length === 0) {
+    showSyncStatus('error', '沒有紀錄可同步'); return;
+  }
+  if (!confirm(`即將同步 ${state.entries.length} 筆紀錄、${state.threads.length} 條追蹤線。\n\n確定嗎？`)) return;
 
   showSyncStatus('loading', `同步中… (0/${state.entries.length})`);
 
-  // Send in chronological order (oldest first)
+  // Send entries in chronological order (oldest first)
   const sorted = [...state.entries].sort((a,b) => new Date(a.date) - new Date(b.date));
   const batchSize = 20;
   let synced = 0;
@@ -3815,11 +4240,247 @@ document.getElementById('syncAllBtn').onclick = async () => {
       synced += batch.length;
       showSyncStatus('loading', `同步中… (${synced}/${sorted.length})`);
     }
-    showSyncStatus('success', `✓ 已同步 ${synced} 筆紀錄到試算表`);
+    // Also sync threads
+    if (state.threads.length > 0) {
+      showSyncStatus('loading', '同步追蹤線中…');
+      await syncRequest({
+        action: 'sync_threads',
+        threads: state.threads.map(t => ({
+          id: t.id, title: t.title, desc: t.desc || '',
+          createdAt: t.created || '', resolvedAt: t.resolvedAt || '',
+          resolved: !!t.resolved
+        }))
+      });
+    }
+    showSyncStatus('success', `✓ 已同步 ${synced} 筆紀錄、${state.threads.length} 條追蹤線`);
     toast('歷史資料同步完成 ✦');
   } catch (e) {
     showSyncStatus('error', `✗ 同步到第 ${synced} 筆時失敗：${e.message}`);
   }
+};
+
+// ============= Mode Switcher (Settings) =============
+
+const MODE_HINTS = {
+  solo: '只用手機記錄。資料存在這台手機，建議每週備份一次。',
+  multi: '手機和電腦都會用。透過 Google 試算表讓兩邊看到相同資料。',
+  all: '進階使用者。顯示所有選項。'
+};
+
+async function setMode(mode) {
+  // Update active tab
+  document.querySelectorAll('.mode-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.mode === mode);
+  });
+
+  // Update hint text
+  document.getElementById('modeHint').textContent = MODE_HINTS[mode];
+
+  // Show/hide blocks
+  document.querySelectorAll('.setting-block').forEach(block => {
+    const modes = (block.dataset.modes || '').split(' ');
+    block.classList.toggle('hidden', !modes.includes(mode));
+  });
+
+  // Save preference
+  try {
+    await window.storage.set('settings_mode', mode);
+  } catch (e) {}
+}
+
+async function loadSettingsMode() {
+  let mode = 'solo'; // default
+  try {
+    const r = await window.storage.get('settings_mode');
+    if (r && r.value) mode = r.value;
+  } catch (e) {}
+  setMode(mode);
+}
+
+document.querySelectorAll('.mode-tab').forEach(t => {
+  t.onclick = () => setMode(t.dataset.mode);
+});
+
+function showBackupStatus(type, message) {
+  const el = document.getElementById('backupStatus');
+  el.className = 'sync-status ' + type;
+  el.textContent = message;
+  el.classList.remove('hidden');
+}
+
+document.getElementById('exportDataBtn').onclick = async () => {
+  const now = new Date();
+  const dateStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+
+  // Also include saved insights
+  const insights = {};
+  try {
+    const list = await window.storage.list('insight_');
+    if (list && list.keys) {
+      for (const k of list.keys) {
+        const r = await window.storage.get(k);
+        if (r && r.value) insights[k] = r.value;
+      }
+    }
+  } catch (e) {}
+
+  const data = {
+    version: 1,
+    exportedAt: now.toISOString(),
+    entries: state.entries,
+    threads: state.threads,
+    insights: insights
+  };
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `情緒波_${dateStr}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  // Mark last backup time
+  try {
+    await window.storage.set('last_backup_at', new Date().toISOString());
+  } catch (e) {}
+
+  showBackupStatus('success', `✓ 已匯出 ${state.entries.length} 筆紀錄、${state.threads.length} 條追蹤線`);
+  toast('資料已匯出 ✦');
+  refreshBackupReminder();
+};
+
+document.getElementById('importDataBtn').onclick = () => {
+  document.getElementById('importFileInput').click();
+};
+
+document.getElementById('importFileInput').onchange = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    const text = await file.text();
+    const data = JSON.parse(text);
+
+    if (!data.entries || !Array.isArray(data.entries)) {
+      showBackupStatus('error', '✗ 檔案格式不對');
+      return;
+    }
+
+    const existingDates = new Set(state.entries.map(e => e.date));
+    const existingThreadIds = new Set(state.threads.map(t => t.id));
+    const existingThreadTitles = new Set(state.threads.map(t => t.title));
+
+    let entriesAdded = 0;
+    let threadsAdded = 0;
+
+    (data.threads || []).forEach(t => {
+      if (!t.id || !t.title) return;
+      if (existingThreadIds.has(t.id) || existingThreadTitles.has(t.title)) return;
+      state.threads.push(t);
+      existingThreadIds.add(t.id);
+      existingThreadTitles.add(t.title);
+      threadsAdded++;
+    });
+
+    data.entries.forEach(entry => {
+      if (!entry.date || existingDates.has(entry.date)) return;
+      state.entries.push(entry);
+      existingDates.add(entry.date);
+      entriesAdded++;
+    });
+
+    // Restore insights
+    if (data.insights) {
+      for (const k of Object.keys(data.insights)) {
+        try {
+          const existing = await window.storage.get(k);
+          if (!existing) await window.storage.set(k, data.insights[k]);
+        } catch (err) {}
+      }
+    }
+
+    state.entries.sort((a, b) => new Date(b.date) - new Date(a.date));
+    await saveAll();
+    refreshMorningCheck();
+    refreshThreadSelector();
+
+    const parts = [];
+    if (entriesAdded > 0) parts.push(`${entriesAdded} 筆紀錄`);
+    if (threadsAdded > 0) parts.push(`${threadsAdded} 條追蹤線`);
+
+    if (parts.length === 0) {
+      showBackupStatus('success', '✓ 檔案裡的資料這台都已經有了');
+    } else {
+      showBackupStatus('success', `✓ 補回了 ${parts.join('、')}`);
+      toast(`已匯入 ${parts.join('、')} ✦`);
+    }
+  } catch (err) {
+    showBackupStatus('error', `✗ 匯入失敗：${err.message}`);
+  }
+  // Reset file input
+  e.target.value = '';
+};
+
+// Backup reminder
+async function refreshBackupReminder() {
+  const reminder = document.getElementById('backupReminder');
+  if (!reminder) return;
+
+  // Don't show if user has sheet sync enabled
+  if (syncConfig.url && syncConfig.autoEnabled) {
+    reminder.classList.add('hidden');
+    return;
+  }
+
+  // Don't show if dismissed recently
+  try {
+    const dismissed = await window.storage.get('backup_reminder_dismissed_at');
+    if (dismissed && dismissed.value) {
+      const dismissedAt = new Date(dismissed.value);
+      const daysSince = (Date.now() - dismissedAt.getTime()) / (1000 * 60 * 60 * 24);
+      if (daysSince < 7) {
+        reminder.classList.add('hidden');
+        return;
+      }
+    }
+  } catch (e) {}
+
+  // Show if 7+ days since first entry AND haven't backed up in 7+ days
+  if (state.entries.length < 5) {
+    reminder.classList.add('hidden');
+    return;
+  }
+
+  try {
+    const last = await window.storage.get('last_backup_at');
+    if (last && last.value) {
+      const lastAt = new Date(last.value);
+      const daysSince = (Date.now() - lastAt.getTime()) / (1000 * 60 * 60 * 24);
+      if (daysSince < 7) {
+        reminder.classList.add('hidden');
+        return;
+      }
+    }
+  } catch (e) {}
+
+  reminder.classList.remove('hidden');
+}
+
+window.dismissBackupReminder = async () => {
+  try {
+    await window.storage.set('backup_reminder_dismissed_at', new Date().toISOString());
+  } catch (e) {}
+  document.getElementById('backupReminder').classList.add('hidden');
+};
+
+document.getElementById('backupReminderLink').onclick = (e) => {
+  e.preventDefault();
+  document.querySelector('[data-tab="settings"]').click();
+  setTimeout(() => {
+    document.getElementById('exportDataBtn').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 200);
 };
 
 // Pull from sheet
@@ -3844,22 +4505,43 @@ document.getElementById('pullBtn').onclick = async () => {
   try {
     const r = await syncRequest({ action: 'read' });
     const sheetEntries = r.entries || [];
-    if (sheetEntries.length === 0) {
-      showPullStatus('success', '試算表是空的，沒有資料可拉');
-      return;
-    }
+    const sheetThreads = r.threads || [];
 
-    // Build set of existing dates (ISO timestamps) for dedup
+    // ---- Merge threads first (so entries can match by title or id) ----
+    const existingThreadIds = new Set(state.threads.map(t => t.id));
+    const existingThreadTitles = new Map(state.threads.map(t => [t.title, t]));
+    let threadsAdded = 0;
+
+    sheetThreads.forEach(s => {
+      if (!s.id || !s.title) return;
+      if (existingThreadIds.has(s.id)) return;
+      // Also skip if same title exists (avoid dupe from manual entry on diff devices)
+      if (existingThreadTitles.has(s.title)) return;
+
+      state.threads.push({
+        id: s.id,
+        title: s.title,
+        desc: s.desc || '',
+        created: s.createdAt || new Date().toISOString(),
+        resolvedAt: s.resolvedAt || '',
+        resolved: !!s.resolved
+      });
+      existingThreadIds.add(s.id);
+      existingThreadTitles.set(s.title, s);
+      threadsAdded++;
+    });
+
+    // ---- Merge entries ----
     const existingDates = new Set(state.entries.map(e => e.date));
+    let entriesAdded = 0;
 
-    let added = 0;
     sheetEntries.forEach(s => {
       if (!s.date || existingDates.has(s.date)) return;
 
       const isMorning = s.waveLabel && s.waveLabel.indexOf('開機') >= 0;
       const wave = isMorning ? 'middle' : waveLabelToCode(s.waveLabel);
 
-      // Try to match thread by title
+      // Match thread by title
       let threadId = null;
       if (s.threadTitle) {
         const thread = state.threads.find(t => t.title === s.threadTitle);
@@ -3885,18 +4567,22 @@ document.getElementById('pullBtn').onclick = async () => {
       };
       state.entries.push(entry);
       existingDates.add(s.date);
-      added++;
+      entriesAdded++;
     });
 
     state.entries.sort((a, b) => new Date(b.date) - new Date(a.date));
     await saveAll();
     refreshMorningCheck();
+    refreshThreadSelector();
 
-    if (added === 0) {
-      showPullStatus('success', '✓ 已是最新狀態，沒有需要補的紀錄');
+    if (entriesAdded === 0 && threadsAdded === 0) {
+      showPullStatus('success', '✓ 已是最新狀態，沒有需要補的資料');
     } else {
-      showPullStatus('success', `✓ 補回了 ${added} 筆紀錄`);
-      toast(`補回 ${added} 筆紀錄 ✦`);
+      const parts = [];
+      if (entriesAdded > 0) parts.push(`${entriesAdded} 筆紀錄`);
+      if (threadsAdded > 0) parts.push(`${threadsAdded} 條追蹤線`);
+      showPullStatus('success', `✓ 補回了 ${parts.join('、')}`);
+      toast(`補回 ${parts.join('、')} ✦`);
     }
   } catch (e) {
     showPullStatus('error', `✗ 讀取失敗：${e.message}`);
@@ -3953,8 +4639,10 @@ function refreshMorningCheck() {
   bindPeriodSelector();
   await loadAll();
   await loadSyncConfig();
+  await loadSettingsMode();
   refreshThreadSelector();
   refreshMorningCheck();
+  refreshBackupReminder();
 })();
 </script>
 </body>
