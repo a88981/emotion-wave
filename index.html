@@ -57,7 +57,7 @@
   body::before {
     content: '';
     position: fixed;
-    inset: 0;
+    inset: -10%;
     background-image:
       radial-gradient(circle at 20% 30%, rgba(240, 165, 154, 0.35) 0%, transparent 35%),
       radial-gradient(circle at 80% 70%, rgba(250, 213, 204, 0.4) 0%, transparent 40%),
@@ -65,13 +65,6 @@
       radial-gradient(circle at 30% 80%, rgba(255, 220, 215, 0.3) 0%, transparent 35%);
     pointer-events: none;
     z-index: 0;
-    animation: drift 30s ease-in-out infinite;
-  }
-
-  @keyframes drift {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(-10px, 10px) scale(1.02); }
-    66% { transform: translate(10px, -10px) scale(0.98); }
   }
 
   body::after {
@@ -382,15 +375,18 @@
   }
 
   /* Accordion body regions */
-  .body-regions-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    margin-bottom: 12px;
+  /* Compact body region tabs */
+  .body-regions-row {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
   }
 
-  .region-btn {
-    padding: 14px 8px;
+  .region-tab {
+    flex: 1;
+    min-width: calc(33.33% - 4px);
+    padding: 8px 4px;
     background: rgba(255, 255, 255, 0.45);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
@@ -399,69 +395,56 @@
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: center;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
     position: relative;
   }
 
-  .region-btn:hover {
+  .region-tab:hover {
     background: rgba(255, 255, 255, 0.7);
-    border-color: rgba(240, 165, 154, 0.3);
+    color: var(--ink);
   }
 
-  .region-btn.active {
-    background: rgba(255, 255, 255, 0.9);
-    border-color: var(--coral);
-    box-shadow: 0 4px 12px rgba(232, 145, 122, 0.2);
+  .region-tab.active {
+    background: linear-gradient(135deg, rgba(240, 165, 154, 0.9) 0%, rgba(232, 145, 122, 0.9) 100%);
+    color: #fff;
+    border-color: rgba(232, 145, 122, 0.7);
+    box-shadow: 0 2px 8px rgba(232, 145, 122, 0.2);
   }
 
-  .region-btn.has-selection::after {
+  .region-tab.has-selection::after {
     content: '';
     position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 6px;
-    height: 6px;
+    top: 4px;
+    right: 6px;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
     background: var(--moss);
   }
 
-  .region-btn-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 0.92rem;
-    color: var(--ink);
-    letter-spacing: 0.05em;
-    margin-bottom: 2px;
+  .region-tab.active.has-selection::after {
+    background: #fff;
   }
 
-  .region-btn-zh {
-    font-size: 0.78rem;
-    color: var(--ink-soft);
-  }
-
-  .region-btn.active .region-btn-title {
-    color: var(--terracotta);
-  }
-
-  .region-panel {
-    background: rgba(255, 255, 255, 0.35);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
+  .body-region-content {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.45);
     border-radius: 6px;
-    padding: 0 16px;
-    max-height: 0;
-    overflow: hidden;
-    transition: all 0.4s ease;
-    margin-bottom: 8px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    animation: fadeIn 0.3s ease;
   }
 
-  .region-panel.open {
-    padding: 16px;
-    max-height: 400px;
-    margin-bottom: 12px;
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
-  .region-panel-hint {
+  .body-region-hint {
     font-size: 0.78rem;
     color: var(--ink-faint);
     font-style: italic;
@@ -478,22 +461,25 @@
 
   .body-tag {
     padding: 7px 12px;
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(232, 145, 122, 0.25);
     border-radius: 20px;
     font-family: 'Noto Serif TC', serif;
     font-size: 0.82rem;
     color: var(--ink-soft);
     cursor: pointer;
     transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(232, 145, 122, 0.08);
   }
 
   .body-tag:hover {
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 1);
     border-color: var(--coral-light);
     color: var(--coral-deep);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(232, 145, 122, 0.15);
   }
 
   .body-tag.selected {
@@ -501,6 +487,10 @@
     color: #fff;
     border-color: rgba(232, 145, 122, 0.7);
     box-shadow: 0 2px 8px rgba(232, 145, 122, 0.25);
+  }
+
+  .body-region-custom {
+    margin-top: 10px;
   }
 
   /* Selected summary */
@@ -814,6 +804,25 @@
 
   .history-entry.thread-entry {
     border-left-color: var(--mist);
+  }
+
+  .history-entry.morning-entry {
+    border-left: 3px solid var(--coral) !important;
+    background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.75) 0%,
+      rgba(255, 245, 240, 0.5) 100%) !important;
+    box-shadow: 0 2px 12px rgba(232, 145, 122, 0.08) !important;
+  }
+
+  .history-entry.morning-entry .entry-date {
+    background: linear-gradient(135deg, var(--coral) 0%, var(--coral-deep) 100%);
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-style: normal;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    box-shadow: 0 1px 4px rgba(232, 145, 122, 0.25);
   }
 
   .entry-header {
@@ -1706,6 +1715,52 @@
     color: var(--ink-soft);
   }
 
+  /* Morning check (inline checkbox at top of record card) */
+  .morning-check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg,
+      rgba(255, 235, 220, 0.5) 0%,
+      rgba(255, 220, 215, 0.4) 100%);
+    border: 1px solid rgba(255, 220, 210, 0.6);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+  }
+
+  .morning-check:hover {
+    background: linear-gradient(135deg,
+      rgba(255, 235, 220, 0.7) 0%,
+      rgba(255, 220, 215, 0.6) 100%);
+  }
+
+  .morning-check input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--coral);
+    cursor: pointer;
+    margin: 0;
+  }
+
+  .morning-check-icon {
+    font-size: 1.1rem;
+  }
+
+  .morning-check-text {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    flex: 1;
+  }
+
+  .morning-check input:checked ~ .morning-check-text {
+    color: var(--coral-deep);
+  }
+
   .help-btn {
     position: absolute;
     top: 24px;
@@ -1756,10 +1811,7 @@
     .wave-options { grid-template-columns: repeat(5, 1fr); gap: 4px; }
     .wave-icon { font-size: 1.1rem; }
     .wave-label { font-size: 0.65rem; }
-    .body-regions-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
-    .region-btn { padding: 12px 4px; }
-    .region-btn-title { font-size: 0.85rem; }
-    .region-btn-zh { font-size: 0.72rem; }
+    .region-tab { font-size: 0.8rem; padding: 7px 3px; }
     h1 { font-size: 1.6rem; }
     .stats-grid { grid-template-columns: 1fr; gap: 10px; }
     .tab { font-size: 0.86rem; padding: 12px 4px; }
@@ -1788,14 +1840,22 @@
 
   <div class="tabs">
     <button class="tab active" data-tab="record">記錄</button>
-    <button class="tab" data-tab="threads">追蹤線</button>
     <button class="tab" data-tab="history">回顧</button>
+    <button class="tab" data-tab="threads">追蹤線</button>
     <button class="tab" data-tab="settings">設定</button>
   </div>
 
   <!-- RECORD (unified) -->
   <div id="tab-record" class="tab-content">
+
     <div class="card">
+
+      <!-- Morning check (only visible if no morning entry today yet) -->
+      <label class="morning-check hidden" id="morningCheck">
+        <input type="checkbox" id="morningCheckbox" />
+        <span class="morning-check-icon">🤍</span>
+        <span class="morning-check-text">這是今早醒來的第一個感受</span>
+      </label>
 
       <div class="section-label">情緒波 · the wave</div>
       <p class="question">此刻，你在波的哪個位置？<span class="required-mark">*</span></p>
@@ -1815,38 +1875,22 @@
       <div class="section-label">身體訊息 · body</div>
       <p class="body-intro">身體先說話，心智後解讀。先別解讀，只覺察。點選區域查看感受選項。</p>
 
-      <div class="body-regions-grid" id="bodyRegionsGrid">
-        <div class="region-btn" data-region="head">
-          <div class="region-btn-title">head</div>
-          <div class="region-btn-zh">頭部</div>
-        </div>
-        <div class="region-btn" data-region="throat">
-          <div class="region-btn-title">throat</div>
-          <div class="region-btn-zh">喉嚨</div>
-        </div>
-        <div class="region-btn" data-region="core">
-          <div class="region-btn-title">core</div>
-          <div class="region-btn-zh">核心</div>
-        </div>
-        <div class="region-btn" data-region="heart">
-          <div class="region-btn-title">heart</div>
-          <div class="region-btn-zh">心輪</div>
-        </div>
-        <div class="region-btn" data-region="root">
-          <div class="region-btn-title">root</div>
-          <div class="region-btn-zh">扎根</div>
-        </div>
-        <div class="region-btn" data-region="limbs">
-          <div class="region-btn-title">limbs</div>
-          <div class="region-btn-zh">末梢</div>
-        </div>
+      <div class="body-regions-row" id="bodyRegionsRow">
+        <button class="region-tab" data-region="head">頭部</button>
+        <button class="region-tab" data-region="throat">喉嚨</button>
+        <button class="region-tab" data-region="core">核心</button>
+        <button class="region-tab" data-region="heart">心輪</button>
+        <button class="region-tab" data-region="root">扎根</button>
+        <button class="region-tab" data-region="limbs">末梢</button>
       </div>
 
-      <div id="bodyPanels"></div>
+      <div id="bodyRegionContent" class="body-region-content hidden">
+        <div class="body-region-hint" id="bodyRegionHint"></div>
+        <div class="body-tags" id="bodyRegionTags"></div>
+        <input type="text" id="bodyRegionCustom" class="body-region-custom" placeholder="自己寫一個（例如：右肩特別緊）" />
+      </div>
 
       <div class="body-summary" id="bodySummary"></div>
-
-      <input type="text" id="bodyExtra" placeholder="其他部位或描述（哪裡？什麼質地？）" style="margin-top: 12px;" />
 
       <div class="section-label" style="margin-top: 24px;">聯想 · association</div>
       <p class="body-intro">如果有東西自己浮上來——一個名字、一個情境、一個畫面——就標記它。沒有也沒關係。</p>
@@ -2479,82 +2523,122 @@ const REGION_LABELS = {
   heart: '心輪', root: '扎根', limbs: '末梢'
 };
 
+// Track which region is currently shown
+let currentBodyRegion = null;
+// Track custom-input items per region (so summary can show them grouped)
+const customByRegion = { head: '', throat: '', core: '', heart: '', root: '', limbs: '' };
+
 function buildBodyRegions() {
-  const panelsContainer = document.getElementById('bodyPanels');
-  panelsContainer.innerHTML = '';
-
-  // Create panels for each region
-  Object.keys(BODY).forEach(region => {
-    const panel = document.createElement('div');
-    panel.className = 'region-panel';
-    panel.id = 'panel-' + region;
-    panel.innerHTML = `
-      <div class="region-panel-hint">${BODY_HINTS[region]}</div>
-      <div class="body-tags" data-region-tags="${region}"></div>
-    `;
-    panelsContainer.appendChild(panel);
-
-    const tagsContainer = panel.querySelector('[data-region-tags]');
-    BODY[region].forEach(item => {
-      const tag = document.createElement('button');
-      tag.className = 'body-tag';
-      tag.textContent = item;
-      tag.onclick = () => {
-        tag.classList.toggle('selected');
-        const i = state.body.indexOf(item);
-        if (i >= 0) state.body.splice(i, 1);
-        else state.body.push(item);
-        updateBodyUI();
-      };
-      tagsContainer.appendChild(tag);
-    });
-  });
-
-  // Region button clicks
-  document.querySelectorAll('.region-btn').forEach(btn => {
+  // Wire region tabs
+  document.querySelectorAll('.region-tab').forEach(btn => {
     btn.onclick = () => {
       const region = btn.dataset.region;
-      const panel = document.getElementById('panel-' + region);
-      const isOpen = panel.classList.contains('open');
+      // Save current custom text before switching (if a region was open)
+      if (currentBodyRegion) saveCurrentCustom();
 
-      // Toggle this region
-      if (isOpen) {
-        panel.classList.remove('open');
-        btn.classList.remove('active');
+      if (currentBodyRegion === region) {
+        // Click same tab - close
+        closeBodyRegion();
       } else {
-        panel.classList.add('open');
-        btn.classList.add('active');
-        // Smooth scroll panel into view
-        setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 200);
+        openBodyRegion(region);
       }
     };
   });
 }
 
+function openBodyRegion(region) {
+  currentBodyRegion = region;
+
+  // Update tab states
+  document.querySelectorAll('.region-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.region === region);
+  });
+
+  // Show content area
+  const content = document.getElementById('bodyRegionContent');
+  content.classList.remove('hidden');
+
+  // Set hint
+  document.getElementById('bodyRegionHint').textContent = BODY_HINTS[region];
+
+  // Build tags
+  const tagsContainer = document.getElementById('bodyRegionTags');
+  tagsContainer.innerHTML = '';
+  BODY[region].forEach(item => {
+    const tag = document.createElement('button');
+    tag.className = 'body-tag' + (state.body.includes(item) ? ' selected' : '');
+    tag.textContent = item;
+    tag.onclick = () => {
+      tag.classList.toggle('selected');
+      const i = state.body.indexOf(item);
+      if (i >= 0) state.body.splice(i, 1);
+      else state.body.push(item);
+      updateBodyUI();
+    };
+    tagsContainer.appendChild(tag);
+  });
+
+  // Restore custom input for this region
+  document.getElementById('bodyRegionCustom').value = customByRegion[region] || '';
+}
+
+function closeBodyRegion() {
+  if (currentBodyRegion) saveCurrentCustom();
+  currentBodyRegion = null;
+  document.querySelectorAll('.region-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('bodyRegionContent').classList.add('hidden');
+}
+
+function saveCurrentCustom() {
+  if (!currentBodyRegion) return;
+  const val = document.getElementById('bodyRegionCustom').value.trim();
+  const prev = customByRegion[currentBodyRegion];
+
+  // Remove old custom item from state.body if it was there
+  if (prev) {
+    const idx = state.body.indexOf(prev);
+    if (idx >= 0) state.body.splice(idx, 1);
+  }
+
+  customByRegion[currentBodyRegion] = val;
+  if (val && !state.body.includes(val)) state.body.push(val);
+  updateBodyUI();
+}
+
+// Save custom when user types and leaves the field (blur)
+document.addEventListener('blur', e => {
+  if (e.target && e.target.id === 'bodyRegionCustom') saveCurrentCustom();
+}, true);
+
 function updateBodyUI() {
-  // Update region button dots (showing has-selection state)
-  document.querySelectorAll('.region-btn').forEach(btn => {
+  // Update tab dots
+  document.querySelectorAll('.region-tab').forEach(btn => {
     const region = btn.dataset.region;
-    const hasSelection = BODY[region].some(item => state.body.includes(item));
-    btn.classList.toggle('has-selection', hasSelection);
+    const hasPreset = BODY[region].some(item => state.body.includes(item));
+    const hasCustom = !!customByRegion[region];
+    btn.classList.toggle('has-selection', hasPreset || hasCustom);
   });
 
   // Update summary
   const summary = document.getElementById('bodySummary');
   if (state.body.length === 0) {
     summary.classList.remove('show');
+    summary.innerHTML = '';
     return;
   }
 
-  // Group selected items by region
+  // Group by region
   const grouped = {};
   Object.keys(BODY).forEach(region => {
-    const selected = BODY[region].filter(item => state.body.includes(item));
-    if (selected.length > 0) grouped[region] = selected;
+    const presets = BODY[region].filter(item => state.body.includes(item));
+    const custom = customByRegion[region];
+    const all = [...presets];
+    if (custom && state.body.includes(custom)) all.push(custom);
+    if (all.length > 0) grouped[region] = all;
   });
 
   summary.innerHTML = Object.entries(grouped).map(([region, items]) =>
-    `<div><strong>${REGION_LABELS[region]}</strong>${items.join(' · ')}</div>`
+    `<div><strong>${REGION_LABELS[region]}</strong> ${items.join(' · ')}</div>`
   ).join('');
   summary.classList.add('show');
 }
@@ -2633,16 +2717,19 @@ document.getElementById('submitBtn').onclick = async () => {
 
   const threadId = document.getElementById('threadSelect').value || null;
   const freeNote = document.getElementById('freeNote').value.trim();
+  const isMorningCheck = document.getElementById('morningCheckbox');
+  const isMorning = isMorningCheck && isMorningCheck.checked && !document.getElementById('morningCheck').classList.contains('hidden');
 
   const entry = {
     id: Date.now(),
-    mode: threadId ? 'deep' : 'quick',
+    mode: isMorning ? 'morning' : (threadId ? 'deep' : 'quick'),
+    isMorning: isMorning,
     date: new Date().toISOString(),
     threadId: threadId,
     wave: state.wave,
     mood: state.mood,
     body: [...state.body],
-    bodyExtra: document.getElementById('bodyExtra').value.trim(),
+    bodyExtra: '',
     association: document.getElementById('association').value.trim(),
     event: document.getElementById('event').value.trim(),
     freeNote: freeNote,
@@ -2651,8 +2738,9 @@ document.getElementById('submitBtn').onclick = async () => {
   };
   state.entries.unshift(entry);
   await saveAll();
-  toast('記下了 ·');
+  toast(isMorning ? '晨間感受記下了 🤍' : '記下了 ·');
   resetForm();
+  refreshMorningCheck();
 
   // Auto sync to Google Sheets if enabled
   syncEntry(entry);
@@ -2663,14 +2751,16 @@ function resetForm() {
   document.querySelectorAll('#waveSel .wave-opt').forEach(x => x.classList.remove('selected'));
   document.querySelectorAll('#moodGrid .mood-chip').forEach(x => x.classList.remove('selected'));
   document.querySelectorAll('.body-tag').forEach(x => x.classList.remove('selected'));
-  document.querySelectorAll('.region-btn').forEach(x => {
+  document.querySelectorAll('.region-tab').forEach(x => {
     x.classList.remove('active');
     x.classList.remove('has-selection');
   });
-  document.querySelectorAll('.region-panel').forEach(x => x.classList.remove('open'));
+  document.getElementById('bodyRegionContent').classList.add('hidden');
+  currentBodyRegion = null;
+  Object.keys(customByRegion).forEach(k => customByRegion[k] = '');
   document.getElementById('bodySummary').classList.remove('show');
   document.getElementById('waveReminder').classList.add('hidden');
-  ['bodyExtra', 'association', 'event', 'freeNote'].forEach(id => {
+  ['association', 'event', 'freeNote'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
@@ -2919,11 +3009,11 @@ function waveClass(w) {
 
 function renderEntryCard(e, inThread) {
   const thread = e.threadId ? state.threads.find(t => t.id === e.threadId) : null;
-  let html = `<div class="history-entry ${e.threadId ? 'thread-entry' : ''}">
+  let html = `<div class="history-entry ${e.threadId ? 'thread-entry' : ''} ${e.isMorning ? 'morning-entry' : ''}">
     <button class="delete-btn" onclick="deleteEntry(${e.id})">delete</button>
     <div class="entry-header">
-      <span class="entry-date">${formatDate(e.date)} · ${e.mode === 'deep' ? 'deep' : 'quick'}</span>
-      <span class="entry-wave-pos ${waveClass(e.wave)}">${waveLabel(e.wave)}</span>
+      <span class="entry-date">${formatDate(e.date)} · ${e.isMorning ? '🤍 開機 · MORNING' : (e.mode === 'deep' ? 'deep' : 'quick')}</span>
+      ${e.isMorning ? '' : `<span class="entry-wave-pos ${waveClass(e.wave)}">${waveLabel(e.wave)}</span>`}
     </div>`;
   if (thread && !inThread) {
     html += `<div class="entry-thread-tag">⌒ ${thread.title}</div>`;
@@ -3600,7 +3690,8 @@ function entryToSyncPayload(entry) {
   const thread = entry.threadId ? state.threads.find(t => t.id === entry.threadId) : null;
   return {
     date: entry.date,
-    waveLabel: waveLabel(entry.wave),
+    isMorning: entry.isMorning || false,
+    waveLabel: entry.isMorning ? '🤍 開機 · MORNING' : waveLabel(entry.wave),
     mood: entry.mood,
     emoji: getMoodEmoji(entry.mood),
     event: entry.event || '',
@@ -3714,6 +3805,30 @@ window.copyCode = async (id) => {
   if (ok) toast('已複製 ✦');
 };
 
+// ============= Morning Check =============
+// Simple checkbox at top of record card. Only visible if no morning entry exists today.
+
+function hasMorningToday() {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  return state.entries.some(e => {
+    if (!e.isMorning) return false;
+    const d = new Date(e.date);
+    return d >= today;
+  });
+}
+
+function refreshMorningCheck() {
+  const check = document.getElementById('morningCheck');
+  if (!check) return;
+  if (hasMorningToday()) {
+    check.classList.add('hidden');
+  } else {
+    check.classList.remove('hidden');
+    document.getElementById('morningCheckbox').checked = false;
+  }
+}
+
 (async function init() {
   bindWaveSelector();
   buildMoodGrid();
@@ -3723,6 +3838,7 @@ window.copyCode = async (id) => {
   await loadAll();
   await loadSyncConfig();
   refreshThreadSelector();
+  refreshMorningCheck();
 })();
 </script>
 </body>
