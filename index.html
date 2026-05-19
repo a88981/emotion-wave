@@ -3282,6 +3282,56 @@
       })).setMimeType(ContentService.MimeType.JSON);
     }
 
+    if (data.action === 'update') {
+      // Update an existing row by matching entry.date in column A
+      var entry = data.entry;
+      var targetDate = String(entry.date || '');
+      var lastRow = sheet.getLastRow();
+      var rowIdx = -1;
+      if (lastRow >= 2) {
+        var dates = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+        for (var i = 0; i < dates.length; i++) {
+          var rowDate = dates[i][0];
+          var rowDateStr = rowDate instanceof Date ? rowDate.toISOString() : String(rowDate || '');
+          if (rowDateStr === targetDate) {
+            rowIdx = i + 2;
+            break;
+          }
+        }
+      }
+      var d = new Date(entry.date);
+      var dateStr = Utilities.formatDate(d, 'Asia/Taipei', 'yyyy-MM-dd');
+      var timeStr = Utilities.formatDate(d, 'Asia/Taipei', 'HH:mm');
+      var hour = d.getHours();
+      var period = hour < 6 ? '凌晨' : hour < 12 ? '上午' : hour < 18 ? '下午' : '晚上';
+      var rowData = [
+        entry.date,
+        dateStr,
+        period + ' ' + timeStr,
+        entry.waveLabel || '',
+        entry.mood || '',
+        entry.emoji || '',
+        entry.event || '',
+        entry.feeling || '',
+        (entry.body || []).join('、'),
+        entry.bodyExtra || '',
+        entry.association || '',
+        entry.threadTitle || ''
+      ];
+      if (rowIdx > 0) {
+        sheet.getRange(rowIdx, 1, 1, 12).setValues([rowData]);
+        return ContentService.createTextOutput(JSON.stringify({
+          status: 'ok', updated: true, row: rowIdx
+        })).setMimeType(ContentService.MimeType.JSON);
+      } else {
+        // 找不到對應 row，fallback 新增（避免資料消失）
+        sheet.appendRow(rowData);
+        return ContentService.createTextOutput(JSON.stringify({
+          status: 'ok', updated: false, appended: true
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+    }
+
     return ContentService.createTextOutput(JSON.stringify({
       status: 'error', message: 'Unknown action'
     })).setMimeType(ContentService.MimeType.JSON);
@@ -4369,8 +4419,8 @@ document.getElementById('editSaveBtn').onclick = async () => {
   if (state.currentTab === 'history') renderHistory();
   if (state.currentTab === 'threads' && state.currentThreadId) openThread(state.currentThreadId);
 
-  // 嘗試同步到試算表（如果有開）
-  if (typeof syncEntry === 'function') syncEntry(entry);
+  // 嘗試同步到試算表（編輯模式，更新原本那行而非新增）
+  if (typeof syncEntry === 'function') syncEntry(entry, true);
 };
 
 // 點 modal 背景關閉
@@ -5197,10 +5247,13 @@ async function syncThreads() {
   }
 }
 
-async function syncEntry(entry) {
+async function syncEntry(entry, isUpdate = false) {
   if (!syncConfig.url || !syncConfig.autoEnabled) return;
   try {
-    await syncRequest({ action: 'add', entry: entryToSyncPayload(entry) });
+    await syncRequest({
+      action: isUpdate ? 'update' : 'add',
+      entry: entryToSyncPayload(entry)
+    });
   } catch (e) {
     console.error('Auto sync failed:', e);
     // Silent fail - don't interrupt the recording flow
